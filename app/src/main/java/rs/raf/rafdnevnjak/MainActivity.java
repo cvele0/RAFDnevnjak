@@ -14,6 +14,7 @@ import rs.raf.rafdnevnjak.modelviews.SplashViewModel;
 
 public class MainActivity extends AppCompatActivity {
     public static final String PREF_LOGIN_KEY = "prefLoginKey";
+    public static final String LOGIN_FRAGMENT_TAG = "loginFragmentTag";
 
     private SplashViewModel splashViewModel;
 
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main_fragment);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.mainFragmentFcv, new LoginFragment());
+            transaction.replace(R.id.mainFragmentFcv, new LoginFragment(), LOGIN_FRAGMENT_TAG);
             transaction.commit();
         } else {
             setContentView(R.layout.activity_main);
