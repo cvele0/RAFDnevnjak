@@ -13,4 +13,9 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="LoginFragmentTextStyle" parent="Theme.RAFDnevnjak">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/purple_500</item>
+    </style>
 </resources>

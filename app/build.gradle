@@ -37,4 +37,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     // Splash screen
     implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
+    // Utility
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }
