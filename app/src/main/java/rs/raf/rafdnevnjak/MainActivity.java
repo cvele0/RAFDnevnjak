@@ -9,18 +9,29 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import rs.raf.rafdnevnjak.fragments.CalendarFragment;
 import rs.raf.rafdnevnjak.fragments.LoginFragment;
 import rs.raf.rafdnevnjak.modelviews.SplashViewModel;
 
 public class MainActivity extends AppCompatActivity {
     public static final String PREF_LOGIN_KEY = "prefLoginKey";
     public static final String LOGIN_FRAGMENT_TAG = "loginFragmentTag";
+    public static final String CALENDAR_FRAGMENT_TAG = "calendarFragmentTag";
+    private String validPassword = null;
 
     private SplashViewModel splashViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        createPassword();
+        loadPassword();
 
         splashViewModel = new ViewModelProvider(this).get(SplashViewModel.class);
         // Handle the splash screen transition.
@@ -42,13 +53,59 @@ public class MainActivity extends AppCompatActivity {
         String logged = sharedPreferences.getString(PREF_LOGIN_KEY, "false");
 
         if (logged.equals("false")) {
-            setContentView(R.layout.activity_main_fragment);
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.mainFragmentFcv, new LoginFragment(), LOGIN_FRAGMENT_TAG);
-            transaction.commit();
+            loadLoginView();
         } else {
-            setContentView(R.layout.activity_main);
+            loadCalendarView();
         }
+    }
+
+    public void loadLoginView() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        setContentView(R.layout.activity_login_fragment);
+        transaction.replace(R.id.loginFragment, new LoginFragment(), LOGIN_FRAGMENT_TAG);
+        transaction.commit();
+    }
+
+    public void loadCalendarView() {
+        setContentView(R.layout.activity_calendar_fragment);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.calendarFragment, new CalendarFragment(), CALENDAR_FRAGMENT_TAG);
+        transaction.commit();
+    }
+
+    private void createPassword() {
+        String text = "Vladan1";
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput("password.txt", MODE_PRIVATE);
+            fos.write(text.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void loadPassword() {
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput("password.txt");
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            validPassword = br.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public String getValidPassword() {
+        return validPassword;
     }
 }

@@ -39,4 +39,6 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
     // Utility
     implementation 'com.jakewharton.timber:timber:4.7.1'
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
 }

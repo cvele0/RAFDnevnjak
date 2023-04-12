@@ -1,20 +1,21 @@
 package rs.raf.rafdnevnjak.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.io.IOException;
-import java.io.InputStream;
-
+import rs.raf.rafdnevnjak.MainActivity;
 import rs.raf.rafdnevnjak.R;
-import timber.log.Timber;
+import rs.raf.rafdnevnjak.models.User;
 
 public class LoginFragment extends Fragment {
     private EditText username;
@@ -43,24 +44,7 @@ public class LoginFragment extends Fragment {
 
     private void init(View view) {
         initView(view);
-        readPasswordFromFile();
         initListeners();
-    }
-
-    private void readPasswordFromFile() {
-        String fileName = "filename.txt";
-        String contents = "";
-
-        try {
-            InputStream stream = getActivity().getAssets().open(fileName);
-            int size = stream.available();
-            byte[] buffer = new byte[size];
-            stream.read(buffer);
-            stream.close();
-            contents = new String(buffer, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void initView(View view) {
@@ -77,9 +61,54 @@ public class LoginFragment extends Fragment {
         emailText.setVisibility(View.INVISIBLE);
     }
 
+    private boolean fieldsEmpty() {
+        boolean result = false;
+        if (username == null || username.getText().toString().equals("")) {
+            usernameText.setVisibility(View.VISIBLE);
+            result = true;
+        } else {
+            usernameText.setVisibility(View.INVISIBLE);
+        }
+        if (password == null || password.getText().toString().equals("")) {
+            passwordText.setVisibility(View.VISIBLE);
+            result = true;
+        } else {
+            passwordText.setVisibility(View.INVISIBLE);
+        }
+        if (email == null || email.getText().toString().equals("")) {
+            emailText.setVisibility(View.VISIBLE);
+            result = true;
+        } else {
+            emailText.setVisibility(View.INVISIBLE);
+        }
+        return result;
+    }
+
     private void initListeners() {
         loginBtn.setOnClickListener(e -> {
-            Timber.e("Password is %s", validPassword);
+            String validPassword = ((MainActivity) requireActivity()).getValidPassword();
+            if (fieldsEmpty()) return;
+            User user = new User(username.getText().toString(), password.getText().toString(), email.getText().toString());
+            if (!user.isValidEmail()) {
+                Toast.makeText(getActivity(), getResources().getString(R.string.email_requirement), Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (!user.isValidPassword()) {
+                Toast.makeText(getActivity(), getResources().getString(R.string.password_requirement), Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (validPassword != null && !validPassword.equals(user.getPassword())) {
+                Toast.makeText(getActivity(), getResources().getString(R.string.incorrect_password), Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            // logging
+            SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(requireActivity().getPackageName(), Context.MODE_PRIVATE);
+            sharedPreferences
+                    .edit()
+                    .putString(MainActivity.PREF_LOGIN_KEY, "true")
+                    .apply();
+            ((MainActivity) requireActivity()).loadCalendarView();
         });
     }
 }
