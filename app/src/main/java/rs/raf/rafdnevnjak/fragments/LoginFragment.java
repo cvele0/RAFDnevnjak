@@ -108,7 +108,7 @@ public class LoginFragment extends Fragment {
                     .edit()
                     .putString(MainActivity.PREF_LOGIN_KEY, "true")
                     .apply();
-            ((MainActivity) requireActivity()).loadCalendarView();
+            ((MainActivity) requireActivity()).loadMainView();
         });
     }
 }
