@@ -1,6 +1,8 @@
 package rs.raf.rafdnevnjak.fragments;
 
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,10 +24,12 @@ import rs.raf.rafdnevnjak.recycler.CalendarAdapter;
 import rs.raf.rafdnevnjak.recycler.DayDiffItemCallback;
 
 public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
+    public static final int SWIPE_THRESHOLD = 70;
+    public static final int SWIPE_VELOCITY_THRESHOLD = 70;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
-    private TextView cellDayText;
     private LocalDate selectedDate;
+
     public CalendarFragment() {
         super(R.layout.fragment_calendar);
     }
@@ -49,7 +53,6 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     private void initView(View view) {
         calendarRecyclerView = view.findViewById(R.id.calendarRecyclerView);
         monthYearText = view.findViewById(R.id.monthYearText);
-        cellDayText = view.findViewById(R.id.cellDayText);
         selectedDate = LocalDate.now();
         setMonthView();
     }
@@ -97,8 +100,53 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         selectedDate = selectedDate.plusMonths(1);
         setMonthView();
     }
-    private void initListeners() {
 
+    private void initListeners() {
+        GestureDetector gestureDetector = new GestureDetector(getContext(),
+                new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onDown(@NonNull MotionEvent e) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
+                        try {
+                            float diffY = e2.getY() - e1.getY();
+                            if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                                if (diffY > 0) {
+                                    swipeUpAction();
+                                } else {
+                                    swipeDownAction();
+                                }
+                                return true;
+                            }
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+                        return false;
+                    }
+                });
+        calendarRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                return gestureDetector.onTouchEvent(e);
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {}
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+        });
+    }
+
+    private void swipeDownAction() {
+        nextMonthAction();
+    }
+
+    private void swipeUpAction() {
+        previousMonthAction();
     }
 
     @Override

@@ -19,8 +19,6 @@ import rs.raf.rafdnevnjak.R;
 import rs.raf.rafdnevnjak.models.Day;
 
 public class CalendarAdapter extends ListAdapter<Day, CalendarAdapter.ViewHolder> {
-
-//    private final Consumer<Day> onDayClicked;
     private final ArrayList<Day> daysOfMonth;
     private OnItemListener onItemListener;
     private Context context;
@@ -29,7 +27,6 @@ public class CalendarAdapter extends ListAdapter<Day, CalendarAdapter.ViewHolder
                            ArrayList<Day> daysOfMonth, OnItemListener onItemListener) {
         super(diffCallback);
         this.context = context;
-//        this.onDayClicked = onDayClicked;
         this.daysOfMonth = daysOfMonth;
         this.onItemListener = onItemListener;
     }
@@ -73,11 +70,6 @@ public class CalendarAdapter extends ListAdapter<Day, CalendarAdapter.ViewHolder
         public ViewHolder(@NonNull View itemView, OnItemListener onItemListener) {
             super(itemView);
             dayOfMonth = itemView.findViewById(R.id.cellDayText);
-//            itemView.setOnClickListener(v -> {
-//                if (getBindingAdapterPosition() != RecyclerView.NO_POSITION) {
-//                    onItemClicked.accept(getBindingAdapterPosition());
-//                }
-//            });
             this.onItemListener = onItemListener;
             itemView.setOnClickListener(this);
         }
@@ -86,9 +78,5 @@ public class CalendarAdapter extends ListAdapter<Day, CalendarAdapter.ViewHolder
         public void onClick(View v) {
             onItemListener.onItemClick(getBindingAdapterPosition(), (String) dayOfMonth.getText());
         }
-
-//        public void bind(String day) {
-//            ((TextView) itemView.findViewById(R.id.cellDayText)).setText(day);
-//        }
     }
 }
