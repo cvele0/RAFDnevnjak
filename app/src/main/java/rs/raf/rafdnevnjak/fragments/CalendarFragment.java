@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import rs.raf.rafdnevnjak.R;
+import rs.raf.rafdnevnjak.models.Day;
 import rs.raf.rafdnevnjak.recycler.CalendarAdapter;
 import rs.raf.rafdnevnjak.recycler.DayDiffItemCallback;
 
@@ -57,7 +58,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
         monthYearText.setText(selectedDate.format(formatter));
 
-        ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
+        ArrayList<Day> daysInMonth = daysInMonthArray(selectedDate);
         CalendarAdapter calendarAdapter = new CalendarAdapter(getContext(),
                 new DayDiffItemCallback(),
                 daysInMonth, this);
@@ -66,8 +67,8 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
 
-    private ArrayList<String> daysInMonthArray(LocalDate date) {
-        ArrayList<String> res = new ArrayList<>();
+    private ArrayList<Day> daysInMonthArray(LocalDate date) {
+        ArrayList<Day> res = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(date);
 
         int daysInMonth = yearMonth.lengthOfMonth();
@@ -76,10 +77,12 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
 
         for (int i = 1; i <= 42; i++) {
-            if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
-                res.add("");
+            if (i <= dayOfWeek) {
+                res.add(new Day(firstOfMonth.minusDays(dayOfWeek - i + 1)));
+            } else if (i > daysInMonth + dayOfWeek) {
+                res.add(new Day(firstOfMonth.plusDays(i - dayOfWeek - 1)));
             } else {
-                res.add(String.valueOf(i - dayOfWeek));
+                res.add(new Day(firstOfMonth.plusDays(i - dayOfWeek - 1)));
             }
         }
         return res;

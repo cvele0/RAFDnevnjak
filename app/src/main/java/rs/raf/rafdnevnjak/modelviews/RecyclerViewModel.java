@@ -18,10 +18,10 @@ public class RecyclerViewModel extends ViewModel {
     private ArrayList<Day> dayList = new ArrayList<>();
 
     public RecyclerViewModel() {
-        for (int i = 0; i <= 100; i++) {
-            Day day = new Day(i,"Day" + i);
-            dayList.add(day);
-        }
+//        for (int i = 0; i <= 100; i++) {
+//            Day day = new Day("Day" + i);
+//            dayList.add(day);
+//        }
         // We are doing this because cars.setValue in the background is first checking if the reference on the object is same
         // and if it is it will not do notifyAll. By creating a new list, we get the new reference everytime
         ArrayList<Day> listToSubmit = new ArrayList<>(dayList);
@@ -39,8 +39,8 @@ public class RecyclerViewModel extends ViewModel {
 
     public int addDay(String pictureUrl, String manufacturer, String model) {
         int id = counter++;
-        Day day = new Day(id, "day" + id);
-        dayList.add(day);
+//        Day day = new Day("day" + id);
+//        dayList.add(day);
         ArrayList<Day> listToSubmit = new ArrayList<>(dayList);
         days.setValue(listToSubmit);
         return id;

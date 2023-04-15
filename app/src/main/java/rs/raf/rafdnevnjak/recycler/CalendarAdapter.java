@@ -21,12 +21,12 @@ import rs.raf.rafdnevnjak.models.Day;
 public class CalendarAdapter extends ListAdapter<Day, CalendarAdapter.ViewHolder> {
 
 //    private final Consumer<Day> onDayClicked;
-    private final ArrayList<String> daysOfMonth;
+    private final ArrayList<Day> daysOfMonth;
     private OnItemListener onItemListener;
     private Context context;
 
     public CalendarAdapter(Context context, @NonNull DiffUtil.ItemCallback<Day> diffCallback,
-                           ArrayList<String> daysOfMonth, OnItemListener onItemListener) {
+                           ArrayList<Day> daysOfMonth, OnItemListener onItemListener) {
         super(diffCallback);
         this.context = context;
 //        this.onDayClicked = onDayClicked;
@@ -54,8 +54,8 @@ public class CalendarAdapter extends ListAdapter<Day, CalendarAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String day = daysOfMonth.get(position);
-        holder.dayOfMonth.setText(day);
+        Day day = daysOfMonth.get(position);
+        holder.dayOfMonth.setText(day.getDay());
 
         Random random = new Random();
         int rnd = random.nextInt(3);

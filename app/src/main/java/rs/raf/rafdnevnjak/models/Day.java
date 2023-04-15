@@ -1,12 +1,15 @@
 package rs.raf.rafdnevnjak.models;
 
-public class Day {
-    private int id;
-    private String day;
+import java.time.LocalDate;
 
-    public Day(int id, String day) {
-        this.id = id;
-        this.day = day;
+public class Day {
+    private static int counter = 0;
+    private int id;
+    private LocalDate date;
+
+    public Day(LocalDate date) {
+        this.id = ++counter; // TODO resiti preko fajla ili baze
+        this.date = date;
     }
 
     public int getId() {
@@ -14,6 +17,6 @@ public class Day {
     }
 
     public String getDay() {
-        return day;
+        return String.valueOf(date.getDayOfMonth());
     }
 }
