@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/recyclerMainLayout"
     tools:context=".fragments.CalendarFragment">
 
 
@@ -17,11 +18,10 @@
         android:layout_marginBottom="20dp">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/monthYearText"
             android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="February 2021"
             android:textSize="20sp"
             android:textAlignment="center"
             android:textColor="@color/black" />
@@ -36,7 +36,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="MON"
+            android:text="@string/mon"
             android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="16sp" />
@@ -45,7 +45,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TUE"
+            android:text="@string/tue"
             android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="16sp" />
@@ -54,7 +54,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="WED"
+            android:text="@string/wed"
             android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="16sp" />
@@ -63,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="THU"
+            android:text="@string/thu"
             android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="16sp" />
@@ -72,7 +72,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="FRI"
+            android:text="@string/fri"
             android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="16sp" />
@@ -81,7 +81,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="SAT"
+            android:text="@string/sat"
             android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="16sp" />
@@ -90,17 +90,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="SUN"
+            android:text="@string/sun"
             android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="16sp" />
     </LinearLayout>
-    
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>
