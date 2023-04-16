@@ -27,4 +27,12 @@
     <string name="log_out">Log out</string>
     <string name="error_logging">Error while logging</string>
     <string name="not_available">N/A</string>
+    <string name="input_new_password">Input new password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="new_password">New password</string>
+    <string name="back">Back</string>
+    <string name="ok">OK</string>
+    <string name="passwords_not_match">Passwords don\'t match</string>
+    <string name="same_password">Password is the same</string>
+    <string name="password_changed">Password changed</string>
 </resources>

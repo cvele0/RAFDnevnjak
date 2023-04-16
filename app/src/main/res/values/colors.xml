@@ -16,4 +16,5 @@
     <color name="loginText">#8DC9D1</color>
     <color name="lightWarning">#DA3636</color>
     <color name="warning">#D32626</color>
+    <color name="green">#0BBD14</color>
 </resources>

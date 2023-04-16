@@ -3,8 +3,11 @@ package rs.raf.rafdnevnjak.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ public class ProfileFragment extends Fragment {
     private TextView profileEmail;
     private Button buttonChangePassword;
     private Button buttonLogOut;
+    private View mainView;
     public ProfileFragment() {
         super(R.layout.fragment_profile);
     }
@@ -34,6 +38,22 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init(view);
+    }
+
+    private void setViewLayout(int id) {
+        LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mainView = inflater.inflate(id, null);
+        ViewGroup rootView = (ViewGroup) getView();
+        rootView.removeAllViews();
+        rootView.addView(mainView);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        mainView = inflater.inflate(R.layout.fragment_profile, null);
+        return mainView;
     }
 
     private void init(View view) {
@@ -66,6 +86,44 @@ public class ProfileFragment extends Fragment {
                     .putString(MainActivity.PREF_LOGIN_KEY, "false")
                     .apply();
             ((MainActivity) requireActivity()).loadLoginView();
+        });
+
+        buttonChangePassword.setOnClickListener(e -> {
+            setViewLayout(R.layout.fragment_change_password);
+            View view = getView();
+            if (view == null) return;
+
+            EditText newPassword = view.findViewById(R.id.inputNewPassword);
+            EditText confirmPassword = view.findViewById(R.id.confirmPassword);
+            Button okButton = view.findViewById(R.id.confirmButton);
+            Button backButton = view.findViewById(R.id.backButton);
+
+            okButton.setOnClickListener(ev -> {
+                String newPass = newPassword.getText().toString();
+                String confPass = confirmPassword.getText().toString();
+                if (!newPass.equals(confPass)) {
+                    Toast.makeText(getContext(), getResources().getString(R.string.passwords_not_match), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                User loggedUser = ((MainActivity) requireActivity()).loadUser();
+                if (loggedUser.getPassword().equals(newPass)) {
+                    Toast.makeText(getContext(), getResources().getString(R.string.same_password), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                User newUser = new User(loggedUser);
+                newUser.setPassword(newPass);
+                if (!newUser.isValidPassword()) {
+                    Toast.makeText(getContext(), getResources().getString(R.string.password_requirement), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ((MainActivity) requireActivity()).saveUser(newUser);
+                Toast.makeText(getContext(), getResources().getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
+                setViewLayout(R.layout.fragment_profile);
+            });
+
+            backButton.setOnClickListener(ev -> {
+                setViewLayout(R.layout.fragment_profile);
+            });
         });
     }
 }

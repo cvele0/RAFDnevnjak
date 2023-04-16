@@ -15,6 +15,12 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public User(User user) {
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.email = user.getEmail();
+    }
+
     public boolean isValidPassword() {
         // Check length
         if (password.length() < 5) return false;
@@ -46,5 +52,9 @@ public class User implements Serializable {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
