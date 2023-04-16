@@ -24,13 +24,11 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        Fragment fragment;
-        switch (position) {
-            case FRAGMENT_1: fragment = new CalendarFragment(); break;
-            case FRAGMENT_2: fragment = new DailyPlanFragment(); break;
-            default: fragment = new ProfileFragment(); break;
-        }
-        return fragment;
+        return switch (position) {
+            case FRAGMENT_1 -> new CalendarFragment();
+            case FRAGMENT_2 -> new DailyPlanFragment();
+            default -> new ProfileFragment();
+        };
     }
 
     @Override
@@ -41,10 +39,10 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        switch(position){
-            case FRAGMENT_1: return "1";
-            case FRAGMENT_2: return "2";
-            default: return "3";
-        }
+        return switch (position) {
+            case FRAGMENT_1 -> "1";
+            case FRAGMENT_2 -> "2";
+            default -> "3";
+        };
     }
 }

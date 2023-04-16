@@ -26,8 +26,6 @@ import rs.raf.rafdnevnjak.viewpager.PagerAdapter;
 public class MainActivity extends AppCompatActivity {
     public static final String PREF_LOGIN_KEY = "prefLoginKey";
     public static final String LOGIN_FRAGMENT_TAG = "loginFragmentTag";
-    public static final String CALENDAR_FRAGMENT_TAG = "calendarFragmentTag";
-    private String validPassword = null;
     private ViewPager viewPager;
     private User loggedUser = null;
 
@@ -48,10 +46,6 @@ public class MainActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
             return false;
-
-//            Boolean value = splashViewModel.isLoading().getValue();
-//            if (value == null) return false;
-//            return value;
         });
 
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
