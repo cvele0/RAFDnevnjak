@@ -24,7 +24,7 @@ import rs.raf.rafdnevnjak.recycler.CalendarAdapter;
 import rs.raf.rafdnevnjak.recycler.DayDiffItemCallback;
 
 public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
-    public static final int SWIPE_THRESHOLD = 70;
+    public static final int SWIPE_THRESHOLD = 100;
     public static final int SWIPE_VELOCITY_THRESHOLD = 70;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;

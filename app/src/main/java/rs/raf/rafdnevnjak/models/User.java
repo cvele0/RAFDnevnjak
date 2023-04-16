@@ -1,9 +1,10 @@
 package rs.raf.rafdnevnjak.models;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class User {
+public class User implements Serializable {
     private String username;
     private String password;
     private String email;
@@ -37,5 +38,13 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

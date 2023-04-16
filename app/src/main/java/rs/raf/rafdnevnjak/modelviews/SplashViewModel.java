@@ -12,7 +12,7 @@ public class SplashViewModel extends ViewModel {
 
     public SplashViewModel() {
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
             isLoading.setValue(false);
         } catch (InterruptedException e) {
             e.printStackTrace();

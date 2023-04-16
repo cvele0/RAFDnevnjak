@@ -8,7 +8,9 @@
     <string name="required">This field is required</string>
     <string name="password_requirement">Password doesn\'t meet requirements</string>
     <string name="email_requirement">Email doesn\'t meet requirements</string>
-    <string name="incorrect_password">Password does not match</string>
+    <string name="incorrect_password">Password not correct</string>
+    <string name="incorrect_email">Email not correct</string>
+    <string name="incorrect_username">Username not correct</string>
     <string name="calendar">Calendar</string>
     <string name="daily_plan">Daily plan</string>
     <string name="profile">Profile</string>
@@ -21,4 +23,8 @@
     <string name="fri">FRI</string>
     <string name="sat">SAT</string>
     <string name="sun">SUN</string>
+    <string name="change_password">Change password</string>
+    <string name="log_out">Log out</string>
+    <string name="error_logging">Error while logging</string>
+    <string name="not_available">N/A</string>
 </resources>

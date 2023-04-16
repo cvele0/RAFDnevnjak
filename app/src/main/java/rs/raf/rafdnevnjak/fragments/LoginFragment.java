@@ -25,7 +25,6 @@ public class LoginFragment extends Fragment {
     private TextView usernameText;
     private TextView passwordText;
     private TextView emailText;
-    private String validPassword = null;
 
     public LoginFragment() {
         super(R.layout.fragment_login);
@@ -55,6 +54,11 @@ public class LoginFragment extends Fragment {
         usernameText = view.findViewById(R.id.usernameText);
         passwordText = view.findViewById(R.id.passwordText);
         emailText = view.findViewById(R.id.emailText);
+
+        User loggedUser = ((MainActivity) requireActivity()).loadUser();
+        if (loggedUser != null) {
+            email.setText(loggedUser.getEmail());
+        }
 
         usernameText.setVisibility(View.INVISIBLE);
         passwordText.setVisibility(View.INVISIBLE);
@@ -86,7 +90,7 @@ public class LoginFragment extends Fragment {
 
     private void initListeners() {
         loginBtn.setOnClickListener(e -> {
-            String validPassword = ((MainActivity) requireActivity()).getValidPassword();
+            User loggedUser = ((MainActivity) requireActivity()).getLoggedUser();
             if (fieldsEmpty()) return;
             User user = new User(username.getText().toString(), password.getText().toString(), email.getText().toString());
             if (!user.isValidEmail()) {
@@ -97,9 +101,22 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(getActivity(), getResources().getString(R.string.password_requirement), Toast.LENGTH_LONG).show();
                 return;
             }
-            if (validPassword != null && !validPassword.equals(user.getPassword())) {
-                Toast.makeText(getActivity(), getResources().getString(R.string.incorrect_password), Toast.LENGTH_LONG).show();
-                return;
+
+            if (loggedUser == null) { // first log in
+                ((MainActivity) requireActivity()).saveUser(user);
+            } else {
+                if (!loggedUser.getPassword().equals(user.getPassword())) {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.incorrect_password), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (!loggedUser.getEmail().equals(user.getEmail())) {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.incorrect_email), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (!loggedUser.getUsername().equals(user.getUsername())) {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.incorrect_username), Toast.LENGTH_LONG).show();
+                    return;
+                }
             }
 
             // logging

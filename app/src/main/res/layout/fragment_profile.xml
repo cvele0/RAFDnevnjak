@@ -1,14 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/silverBlue"
     tools:context=".fragments.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:id="@+id/profileImage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="profile view" />
+        android:layout_height="200dp"
+        android:src="@drawable/profile"
+        android:layout_marginTop="20dp"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/profileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileImage"
+        android:layout_marginTop="20dp"
+        android:layout_centerInParent="true"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="40sp" />
+
+    <TextView
+        android:id="@+id/profileEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileName"
+        android:layout_centerInParent="true"
+        android:textSize="30sp"
+        android:textStyle="italic"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/black"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/profileButtonChangePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileEmail"
+        android:width="200dp"
+        android:height="50dp"
+        android:backgroundTint="@color/oxford"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="60dp"
+        android:text="@string/change_password" />
+
+    <Button
+        android:id="@+id/profileButtonLogOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileButtonChangePassword"
+        android:width="200dp"
+        android:height="50dp"
+        android:backgroundTint="@color/lightWarning"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/log_out" />
+
+
+</RelativeLayout>

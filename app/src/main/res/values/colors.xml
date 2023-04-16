@@ -14,5 +14,6 @@
     <color name="babyBlue">#2E559E</color>
     <color name="silverBlue">#5e8fb8</color>
     <color name="loginText">#8DC9D1</color>
+    <color name="lightWarning">#DA3636</color>
     <color name="warning">#D32626</color>
 </resources>

@@ -12,13 +12,14 @@ import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import rs.raf.rafdnevnjak.fragments.LoginFragment;
+import rs.raf.rafdnevnjak.models.User;
 import rs.raf.rafdnevnjak.modelviews.SplashViewModel;
 import rs.raf.rafdnevnjak.viewpager.PagerAdapter;
 
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String CALENDAR_FRAGMENT_TAG = "calendarFragmentTag";
     private String validPassword = null;
     private ViewPager viewPager;
+    private User loggedUser = null;
 
     private SplashViewModel splashViewModel;
 
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         splashScreen.setKeepOnScreenCondition(() -> {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -75,8 +77,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        createPassword();
-        loadPassword();
+        loadUser();
     }
 
     private void initNavigationBar() {
@@ -85,48 +86,42 @@ public class MainActivity extends AppCompatActivity {
 
         ((BottomNavigationView)findViewById(R.id.bottomNavigation)).setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                // setCurrentItem metoda viewPager samo obavesti koji je Item trenutno aktivan i onda metoda getItem u adapteru setuje odredjeni fragment za tu poziciju
-                case R.id.navigation_1: viewPager.setCurrentItem(PagerAdapter.FRAGMENT_1, false); break;
-                case R.id.navigation_2: viewPager.setCurrentItem(PagerAdapter.FRAGMENT_2, false); break;
-                case R.id.navigation_3: viewPager.setCurrentItem(PagerAdapter.FRAGMENT_3, false); break;
+                case R.id.navigation_1 -> viewPager.setCurrentItem(PagerAdapter.FRAGMENT_1, false);
+                case R.id.navigation_2 -> viewPager.setCurrentItem(PagerAdapter.FRAGMENT_2, false);
+                case R.id.navigation_3 -> viewPager.setCurrentItem(PagerAdapter.FRAGMENT_3, false);
             }
             return true;
         });
     }
 
-    private void createPassword() {
-        String text = "Vladan1";
-        FileOutputStream fos = null;
+    public void saveUser(User user) {
         try {
-            fos = openFileOutput("password.txt", MODE_PRIVATE);
-            fos.write(text.getBytes());
+            FileOutputStream fileOut = openFileOutput("userData.dat", Context.MODE_PRIVATE);
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            objectOut.writeObject(user);
+            objectOut.close();
+            fileOut.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
-    private void loadPassword() {
-        FileInputStream fis = null;
+    public User loadUser() {
+        User user = null;
         try {
-            fis = openFileInput("password.txt");
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            validPassword = br.readLine();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            FileInputStream fileIn = openFileInput("userData.dat");
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+            user = (User) objectIn.readObject();
+            loggedUser = user;
+            objectIn.close();
+            fileIn.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
-
+        return user;
     }
 
-    public String getValidPassword() {
-        return validPassword;
+    public User getLoggedUser() {
+        return loggedUser;
     }
 }
