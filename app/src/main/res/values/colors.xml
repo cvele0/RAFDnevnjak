@@ -17,4 +17,8 @@
     <color name="lightWarning">#DA3636</color>
     <color name="warning">#D32626</color>
     <color name="green">#0BBD14</color>
+
+    <color name="low_priority">#5CED63</color>
+    <color name="mid_priority">#FDD764</color>
+    <color name="high_priority">#F35257</color>
 </resources>

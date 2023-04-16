@@ -1,12 +1,15 @@
 package rs.raf.rafdnevnjak.recycler;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -53,13 +56,14 @@ public class CalendarAdapter extends ListAdapter<Day, CalendarAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Day day = daysOfMonth.get(position);
         holder.dayOfMonth.setText(day.getDay());
+        ConstraintLayout cl = holder.itemView.findViewById(R.id.cellLayout);
 
         Random random = new Random();
         int rnd = random.nextInt(3);
         switch (rnd) {
-            case 0 -> holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.babyBlue));
-            case 1 -> holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.silverBlue));
-            case 2 -> holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.loginText));
+            case 0 -> cl.setBackground(holder.itemView.getContext().getDrawable(R.drawable.low_priority_layout_border));
+            case 1 -> cl.setBackground(holder.itemView.getContext().getDrawable(R.drawable.mid_priority_layout_border));
+            default -> cl.setBackground(holder.itemView.getContext().getDrawable(R.drawable.high_priority_layout_border));
         }
     }
 
