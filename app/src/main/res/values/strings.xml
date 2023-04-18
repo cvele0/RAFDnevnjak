@@ -35,4 +35,8 @@
     <string name="passwords_not_match">Passwords don\'t match</string>
     <string name="same_password">Password is the same</string>
     <string name="password_changed">Password changed</string>
+    <string name="past_obligations">Show past obligations</string>
+    <string name="low">Low</string>
+    <string name="mid">Mid</string>
+    <string name="high">High</string>
 </resources>
