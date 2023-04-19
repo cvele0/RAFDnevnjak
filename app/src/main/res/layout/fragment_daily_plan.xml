@@ -77,6 +77,7 @@
         android:layout_marginBottom="0dp">
 
         <TextView
+            android:id="@+id/lowTab"
             android:layout_width="0dp"
             android:background="@drawable/low_priority_layout_border"
             android:layout_height="wrap_content"
@@ -88,6 +89,7 @@
             android:text="@string/low" />
 
         <TextView
+            android:id="@+id/midTab"
             android:layout_width="0dp"
             android:background="@drawable/mid_priority_layout_border"
             android:layout_height="wrap_content"
@@ -99,6 +101,7 @@
             android:text="@string/mid" />
 
         <TextView
+            android:id="@+id/highTab"
             android:layout_width="0dp"
             android:background="@drawable/high_priority_layout_border"
             android:layout_height="wrap_content"

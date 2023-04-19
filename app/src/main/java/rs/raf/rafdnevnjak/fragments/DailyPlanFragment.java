@@ -3,10 +3,8 @@ package rs.raf.rafdnevnjak.fragments;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,9 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 
 import rs.raf.rafdnevnjak.R;
 import rs.raf.rafdnevnjak.models.Day;
@@ -40,6 +36,9 @@ public class DailyPlanFragment extends Fragment {
     private RecyclerView dailyPlanRecyclerView;
     private DailyPlanAdapter dailyPlanAdapter;
     private RecyclerViewModel recyclerViewModel;
+    private TextView lowTab;
+    private TextView midTab;
+    private TextView highTab;
     private LocalDate selectedDate;
     public DailyPlanFragment(LocalDate localDate) {
         super(R.layout.fragment_daily_plan);
@@ -69,6 +68,11 @@ public class DailyPlanFragment extends Fragment {
         searchView = view.findViewById(R.id.dailyPlanSearchView);
         dailyPlanRecyclerView = view.findViewById(R.id.dailyPlanRecyclerView);
         floatingActionButton = view.findViewById(R.id.dailyPlanFloatingButton);
+        lowTab = view.findViewById(R.id.lowTab);
+        midTab = view.findViewById(R.id.midTab);
+        highTab = view.findViewById(R.id.highTab);
+
+        checkBox.setChecked(true);
         setView();
     }
 
@@ -146,6 +150,18 @@ public class DailyPlanFragment extends Fragment {
                 recyclerViewModel.filterObligations(day, newText);
                 return true;
             }
+        });
+
+        lowTab.setOnClickListener(e -> {
+            recyclerViewModel.sortByPriority(new Day(selectedDate.minusDays(1)), Priority.LOW);
+        });
+
+        midTab.setOnClickListener(e -> {
+            recyclerViewModel.sortByPriority(new Day(selectedDate.minusDays(1)), Priority.MID);
+        });
+
+        highTab.setOnClickListener(e -> {
+            recyclerViewModel.sortByPriority(new Day(selectedDate.minusDays(1)), Priority.HIGH);
         });
     }
 }

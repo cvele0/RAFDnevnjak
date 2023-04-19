@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import rs.raf.rafdnevnjak.models.Day;
 import rs.raf.rafdnevnjak.models.Obligation;
+import rs.raf.rafdnevnjak.models.Priority;
 
 public class RecyclerViewModel extends ViewModel {
     private final MutableLiveData<HashMap<Day, ArrayList<Obligation>>> obligations = new MutableLiveData<>();
@@ -66,6 +67,21 @@ public class RecyclerViewModel extends ViewModel {
         HashMap<Day, ArrayList<Obligation>> filteredMap = new HashMap<>(obligationsMap);
         filteredMap.put(day, filtered);
         obligations.setValue(filteredMap);
+    }
+
+    public void sortByPriority(Day day, Priority priority) {
+        HashMap<Day, ArrayList<Obligation>> toSort = new HashMap<>(obligationsMap);
+        ArrayList<Obligation> list = new ArrayList<>(toSort.get(day));
+        list.sort((o1, o2) -> {
+            if (o1.getPriority().equals(priority) && o1.getPriority().equals(o2.getPriority())) {
+                return o1.getStartTime().compareTo(o2.getStartTime());
+            }
+            if (o1.getPriority().equals(priority)) return -1;
+            if (o2.getPriority().equals(priority)) return 1;
+            return o1.getStartTime().compareTo(o2.getStartTime());
+        });
+        toSort.put(day, list);
+        obligations.setValue(toSort);
     }
 
     public void reserveSpace(Day day) {
