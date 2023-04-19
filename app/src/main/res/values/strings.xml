@@ -39,4 +39,6 @@
     <string name="low">Low</string>
     <string name="mid">Mid</string>
     <string name="high">High</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -5,7 +5,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +16,8 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import rs.raf.rafdnevnjak.R;
 import rs.raf.rafdnevnjak.models.Day;
@@ -29,6 +30,8 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
+
+    private Map<Integer, LocalDate> mapDate;
 
     public CalendarFragment() {
         super(R.layout.fragment_calendar);
@@ -78,15 +81,19 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
 
         LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
         int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
+        mapDate = new HashMap<>();
 
         for (int i = 1; i <= 42; i++) {
+            LocalDate calcDate;
             if (i <= dayOfWeek) {
-                res.add(new Day(firstOfMonth.minusDays(dayOfWeek - i + 1)));
+                calcDate = firstOfMonth.minusDays(dayOfWeek - i + 1);
             } else if (i > daysInMonth + dayOfWeek) {
-                res.add(new Day(firstOfMonth.plusDays(i - dayOfWeek - 1)));
+                calcDate = firstOfMonth.plusDays(i - dayOfWeek - 1);
             } else {
-                res.add(new Day(firstOfMonth.plusDays(i - dayOfWeek - 1)));
+                calcDate = firstOfMonth.plusDays(i - dayOfWeek - 1);
             }
+            res.add(new Day(calcDate));
+            mapDate.put(i - 1, calcDate);
         }
         return res;
     }
@@ -151,10 +158,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
 
     @Override
     public void onItemClick(int position, String dayText) {
-        if (dayText.equals("")) {
-            Toast.makeText(getContext(), "You selected empty cell", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getContext(), dayText, Toast.LENGTH_LONG).show();
-        }
+        LocalDate date = mapDate.get(position);
+
     }
 }

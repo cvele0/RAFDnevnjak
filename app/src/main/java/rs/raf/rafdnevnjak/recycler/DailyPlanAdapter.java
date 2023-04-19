@@ -7,16 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -29,12 +26,21 @@ public class DailyPlanAdapter extends ListAdapter<Obligation, DailyPlanAdapter.D
     private Context context;
     private Day day;
 
+    private ClickListener clickListener;
+
     public DailyPlanAdapter(Day day, Context context, @NonNull DiffUtil.ItemCallback<Obligation> diffCallback,
-                            ArrayList<Obligation> obligations) {
+                            ArrayList<Obligation> obligations, ClickListener clickListener) {
         super(diffCallback);
         this.day = day;
         this.context = context;
         this.obligations = obligations;
+        this.clickListener = clickListener;
+    }
+
+    public interface ClickListener {
+        void onObligationClick();
+        void onEditClick();
+        void onDeleteClick();
     }
 
     @NonNull
@@ -43,7 +49,7 @@ public class DailyPlanAdapter extends ListAdapter<Obligation, DailyPlanAdapter.D
         View view = LayoutInflater.from(context).inflate(R.layout.obligations_cell, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = (int) (parent.getHeight() * 0.333333);
-        return new DailyViewHolder(view, context);
+        return new DailyViewHolder(view, context, clickListener);
     }
 
     @Override
@@ -85,8 +91,9 @@ public class DailyPlanAdapter extends ListAdapter<Obligation, DailyPlanAdapter.D
         public ImageView editObligation;
         public ImageView deleteObligation;
         public LinearLayout obligationsLayout;
+        private ClickListener clickListener;
 
-        public DailyViewHolder(@NonNull View itemView, Context context) {
+        public DailyViewHolder(@NonNull View itemView, Context context, ClickListener clickListener) {
             super(itemView);
             showObligation = itemView.findViewById(R.id.showObligation);
             timeOfObligation = itemView.findViewById(R.id.timeOfObligation);
@@ -95,16 +102,21 @@ public class DailyPlanAdapter extends ListAdapter<Obligation, DailyPlanAdapter.D
             deleteObligation = itemView.findViewById(R.id.deleteObligation);
             obligationsLayout = itemView.findViewById(R.id.obligationsCellLayout);
             this.context = context;
+            this.clickListener = clickListener;
             initListeners();
         }
 
         private void initListeners() {
             editObligation.setOnClickListener(e -> {
-                Toast.makeText(context, "Edit clicked", Toast.LENGTH_LONG).show();
+                clickListener.onEditClick();
             });
 
             deleteObligation.setOnClickListener(e -> {
-                Toast.makeText(context, "delete clicked", Toast.LENGTH_LONG).show();
+                clickListener.onDeleteClick();
+            });
+
+            obligationsLayout.setOnClickListener(e -> {
+                clickListener.onObligationClick();
             });
         }
     }

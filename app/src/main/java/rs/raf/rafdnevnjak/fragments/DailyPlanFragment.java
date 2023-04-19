@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +29,7 @@ import rs.raf.rafdnevnjak.modelviews.RecyclerViewModel;
 import rs.raf.rafdnevnjak.recycler.DailyPlanAdapter;
 import rs.raf.rafdnevnjak.recycler.ObligationDiffItemCallback;
 
-public class DailyPlanFragment extends Fragment {
+public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.ClickListener {
     private TextView dateText;
     private CheckBox checkBox;
     private SearchView searchView;
@@ -85,11 +86,16 @@ public class DailyPlanFragment extends Fragment {
                 new Day(selectedDate),
                 getContext(),
                 new ObligationDiffItemCallback(),
-                Objects.requireNonNull(recyclerViewModel.getObligations().getValue()).get(new Day(selectedDate)));
+                Objects.requireNonNull(recyclerViewModel.getObligations().getValue())
+                        .get(new Day(selectedDate))
+                , this);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext().getApplicationContext());
         dailyPlanRecyclerView.setLayoutManager(layoutManager);
         dailyPlanRecyclerView.setAdapter(dailyPlanAdapter);
+
+        //TODO obrisi
+        dodajBezveze(new Day(selectedDate.minusDays(1)));
     }
 
     private void dodajBezveze(Day day) {
@@ -123,7 +129,7 @@ public class DailyPlanFragment extends Fragment {
     private void initListeners() {
         floatingActionButton.setOnClickListener(e -> {
             Day day = new Day(selectedDate.minusDays(1));
-            dodajBezveze(day);
+//            dodajBezveze(day);
         });
 
         recyclerViewModel.getObligations().observe(requireActivity(), obligations -> {
@@ -163,5 +169,20 @@ public class DailyPlanFragment extends Fragment {
         highTab.setOnClickListener(e -> {
             recyclerViewModel.sortByPriority(new Day(selectedDate.minusDays(1)), Priority.HIGH);
         });
+    }
+
+    @Override
+    public void onObligationClick() {
+        Toast.makeText(getContext(), "Obligation clicked", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onEditClick() {
+        Toast.makeText(getContext(), "delete clicked", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onDeleteClick() {
+        Toast.makeText(getContext(), "delete", Toast.LENGTH_LONG).show();
     }
 }

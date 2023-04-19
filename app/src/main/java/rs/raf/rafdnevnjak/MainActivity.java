@@ -2,6 +2,7 @@ package rs.raf.rafdnevnjak;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
@@ -17,8 +18,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
+import rs.raf.rafdnevnjak.fragments.CalendarFragment;
+import rs.raf.rafdnevnjak.fragments.DailyPlanFragment;
 import rs.raf.rafdnevnjak.fragments.LoginFragment;
+import rs.raf.rafdnevnjak.fragments.ProfileFragment;
 import rs.raf.rafdnevnjak.models.User;
 import rs.raf.rafdnevnjak.modelviews.SplashViewModel;
 import rs.raf.rafdnevnjak.viewpager.PagerAdapter;
@@ -27,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREF_LOGIN_KEY = "prefLoginKey";
     public static final String LOGIN_FRAGMENT_TAG = "loginFragmentTag";
     private ViewPager viewPager;
+    private BottomNavigationView bottomNavigationView;
     private User loggedUser = null;
 
     private SplashViewModel splashViewModel;
@@ -76,7 +83,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void initNavigationBar() {
         viewPager = findViewById(R.id.viewPager);
-        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
+        ArrayList<Fragment> mFragments = new ArrayList<>();
+        mFragments.add(new CalendarFragment());
+        mFragments.add(new DailyPlanFragment(LocalDate.now()));
+        mFragments.add(new ProfileFragment());
+        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), mFragments, this));
 
         ((BottomNavigationView)findViewById(R.id.bottomNavigation)).setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -118,4 +130,30 @@ public class MainActivity extends AppCompatActivity {
     public User getLoggedUser() {
         return loggedUser;
     }
+
+//    public void setDailyPlanFocus(LocalDate date) {
+////        Toast.makeText(this, date.toString(), Toast.LENGTH_LONG).show();
+////        ArrayList<Fragment> mFragments = new ArrayList<>();
+////        mFragments.add(new CalendarFragment());
+////        mFragments.add(new DailyPlanFragment(date));
+////        mFragments.add(new ProfileFragment());
+////        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), mFragments, this));
+////        ((BottomNavigationView)findViewById(R.id.bottomNavigation)).setOnItemSelectedListener(item -> {
+////            switch (item.getItemId()) {
+////                case R.id.navigation_1 -> viewPager.setCurrentItem(PagerAdapter.FRAGMENT_1, false);
+////                case R.id.navigation_2 -> viewPager.setCurrentItem(PagerAdapter.FRAGMENT_2, false);
+////                case R.id.navigation_3 -> viewPager.setCurrentItem(PagerAdapter.FRAGMENT_3, false);
+////            }
+////            return true;
+////        });
+////        bottomNavigationView.setSelectedItemId(
+////                bottomNavigationView.getMenu().getItem(PagerAdapter.FRAGMENT_2).getItemId());
+//        PagerAdapter pagerAdapter = (PagerAdapter) viewPager.getAdapter();
+//        if (pagerAdapter != null) {
+////            pagerAdapter.replaceFragment(PagerAdapter.FRAGMENT_2, new DailyPlanFragment(date));
+//            pagerAdapter.replaceFragment(1, new DailyPlanFragment(date));
+//            pagerAdapter.notifyDataSetChanged();
+//            viewPager.setCurrentItem(PagerAdapter.FRAGMENT_2);
+//        }
+//    }
 }
