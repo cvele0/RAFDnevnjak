@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import rs.raf.rafdnevnjak.MainActivity;
 import rs.raf.rafdnevnjak.R;
 import rs.raf.rafdnevnjak.models.Day;
 import rs.raf.rafdnevnjak.recycler.CalendarAdapter;
@@ -67,7 +68,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         ArrayList<Day> daysInMonth = daysInMonthArray(selectedDate);
         CalendarAdapter calendarAdapter = new CalendarAdapter(getContext(),
                 new DayDiffItemCallback(),
-                daysInMonth, this);
+                daysInMonth, this, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext().getApplicationContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
@@ -159,6 +160,6 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     @Override
     public void onItemClick(int position, String dayText) {
         LocalDate date = mapDate.get(position);
-
+        ((MainActivity) requireActivity()).setDailyPlanFocus(date);
     }
 }

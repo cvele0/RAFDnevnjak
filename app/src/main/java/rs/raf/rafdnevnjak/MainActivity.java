@@ -88,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
         mFragments.add(new CalendarFragment());
         mFragments.add(new DailyPlanFragment(LocalDate.now()));
         mFragments.add(new ProfileFragment());
-        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), mFragments, this));
+        viewPager.setAdapter(
+                new PagerAdapter(getSupportFragmentManager(), mFragments, this, LocalDate.now()));
 
         ((BottomNavigationView)findViewById(R.id.bottomNavigation)).setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -131,29 +132,14 @@ public class MainActivity extends AppCompatActivity {
         return loggedUser;
     }
 
-//    public void setDailyPlanFocus(LocalDate date) {
-////        Toast.makeText(this, date.toString(), Toast.LENGTH_LONG).show();
-////        ArrayList<Fragment> mFragments = new ArrayList<>();
-////        mFragments.add(new CalendarFragment());
-////        mFragments.add(new DailyPlanFragment(date));
-////        mFragments.add(new ProfileFragment());
-////        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), mFragments, this));
-////        ((BottomNavigationView)findViewById(R.id.bottomNavigation)).setOnItemSelectedListener(item -> {
-////            switch (item.getItemId()) {
-////                case R.id.navigation_1 -> viewPager.setCurrentItem(PagerAdapter.FRAGMENT_1, false);
-////                case R.id.navigation_2 -> viewPager.setCurrentItem(PagerAdapter.FRAGMENT_2, false);
-////                case R.id.navigation_3 -> viewPager.setCurrentItem(PagerAdapter.FRAGMENT_3, false);
-////            }
-////            return true;
-////        });
-////        bottomNavigationView.setSelectedItemId(
-////                bottomNavigationView.getMenu().getItem(PagerAdapter.FRAGMENT_2).getItemId());
-//        PagerAdapter pagerAdapter = (PagerAdapter) viewPager.getAdapter();
-//        if (pagerAdapter != null) {
-////            pagerAdapter.replaceFragment(PagerAdapter.FRAGMENT_2, new DailyPlanFragment(date));
-//            pagerAdapter.replaceFragment(1, new DailyPlanFragment(date));
-//            pagerAdapter.notifyDataSetChanged();
-//            viewPager.setCurrentItem(PagerAdapter.FRAGMENT_2);
-//        }
-//    }
+    public void setDailyPlanFocus(LocalDate date) {
+        PagerAdapter pagerAdapter = (PagerAdapter) viewPager.getAdapter();
+        if (pagerAdapter != null) {
+            DailyPlanFragment.selectedDate = date;
+            pagerAdapter.setDate(date);
+            pagerAdapter.notifyDataSetChanged();
+            bottomNavigationView.setSelectedItemId(R.id.navigation_2);
+            viewPager.setCurrentItem(PagerAdapter.FRAGMENT_2);
+        }
+    }
 }

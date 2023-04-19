@@ -40,10 +40,10 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
     private TextView lowTab;
     private TextView midTab;
     private TextView highTab;
-    private LocalDate selectedDate;
+    public static LocalDate selectedDate;
     public DailyPlanFragment(LocalDate localDate) {
         super(R.layout.fragment_daily_plan);
-        this.selectedDate = localDate;
+        selectedDate = localDate;
     }
 
     @Override
@@ -95,7 +95,9 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
         dailyPlanRecyclerView.setAdapter(dailyPlanAdapter);
 
         //TODO obrisi
-        dodajBezveze(new Day(selectedDate.minusDays(1)));
+//        dodajBezveze(new Day(selectedDate.minusDays(1)));
+        dodajBezveze(new Day(LocalDate.of(2023, 4, 19).minusDays(1)));
+        dodajBezveze2(new Day(LocalDate.of(2023, 4, 14).minusDays(1)));
     }
 
     private void dodajBezveze(Day day) {
@@ -126,10 +128,39 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
         recyclerViewModel.addObligation(day, obligation5);
     }
 
+    private void dodajBezveze2(Day day) {
+        Obligation obligation1 = new Obligation("bol",
+                Priority.MID, LocalTime.of(14, 30),
+                LocalTime.of(14, 45),
+                "Nesto protiv bolova");
+        Obligation obligation2 = new Obligation("Civ2",
+                Priority.LOW, LocalTime.of(11, 30),
+                LocalTime.of(11, 45),
+                "Civas");
+        Obligation obligation3 = new Obligation("Dij",
+                Priority.MID, LocalTime.of(20, 30),
+                LocalTime.of(20, 45),
+                "dijabolik");
+        Obligation obligation4 = new Obligation("Bla",
+                Priority.LOW, LocalTime.of(18, 30),
+                LocalTime.of(18, 45),
+                "blah blah");
+//        Obligation obligation5 = new Obligation("MK",
+//                Priority.HIGH, LocalTime.of(4, 0),
+//                LocalTime.of(4, 30),
+//                "mile bog");
+        recyclerViewModel.addObligation(day, obligation1);
+        recyclerViewModel.addObligation(day, obligation2);
+        recyclerViewModel.addObligation(day, obligation3);
+        recyclerViewModel.addObligation(day, obligation4);
+//        recyclerViewModel.addObligation(day, obligation5);
+    }
+
     private void initListeners() {
         floatingActionButton.setOnClickListener(e -> {
             Day day = new Day(selectedDate.minusDays(1));
 //            dodajBezveze(day);
+            //TODO raditi
         });
 
         recyclerViewModel.getObligations().observe(requireActivity(), obligations -> {
@@ -173,7 +204,7 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
 
     @Override
     public void onObligationClick() {
-        Toast.makeText(getContext(), "Obligation clicked", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), selectedDate.toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -8,27 +8,35 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import rs.raf.rafdnevnjak.R;
 import rs.raf.rafdnevnjak.models.Day;
+import rs.raf.rafdnevnjak.models.Obligation;
+import rs.raf.rafdnevnjak.models.Priority;
+import rs.raf.rafdnevnjak.modelviews.RecyclerViewModel;
 
 public class CalendarAdapter extends ListAdapter<Day, CalendarAdapter.ViewHolder> {
     private final ArrayList<Day> daysOfMonth;
     private OnItemListener onItemListener;
     private Context context;
+    private Fragment fragment;
+    private RecyclerViewModel recyclerViewModel;
 
     public CalendarAdapter(Context context, @NonNull DiffUtil.ItemCallback<Day> diffCallback,
-                           ArrayList<Day> daysOfMonth, OnItemListener onItemListener) {
+                           ArrayList<Day> daysOfMonth, OnItemListener onItemListener,
+                           Fragment fragment) {
         super(diffCallback);
         this.context = context;
         this.daysOfMonth = daysOfMonth;
         this.onItemListener = onItemListener;
+        this.fragment = fragment;
     }
 
     @Override
@@ -55,12 +63,26 @@ public class CalendarAdapter extends ListAdapter<Day, CalendarAdapter.ViewHolder
         holder.dayOfMonth.setText(day.getDayOfMonth());
         ConstraintLayout cl = holder.itemView.findViewById(R.id.cellLayout);
 
-        Random random = new Random();
-        int rnd = random.nextInt(3);
-        switch (rnd) {
-            case 0 -> cl.setBackground(holder.itemView.getContext().getDrawable(R.drawable.low_priority_layout_border));
-            case 1 -> cl.setBackground(holder.itemView.getContext().getDrawable(R.drawable.mid_priority_layout_border));
-            default -> cl.setBackground(holder.itemView.getContext().getDrawable(R.drawable.high_priority_layout_border));
+        recyclerViewModel = new ViewModelProvider(fragment.requireActivity()).get(RecyclerViewModel.class);
+        ArrayList<Obligation> obligations = recyclerViewModel.getObligations()
+                .getValue().get(new Day(day.getDate().minusDays(1)));
+        Priority priority = null;
+        if (obligations == null) return;
+        for (Obligation ob : obligations) {
+            if (priority == null) {
+                priority = ob.getPriority();
+            } else {
+                if (priority.compareTo(ob.getPriority()) < 0) {
+                    priority = ob.getPriority();
+                }
+            }
+        }
+        if (priority != null) {
+            switch (priority) {
+                case LOW -> cl.setBackground(holder.itemView.getContext().getDrawable(R.drawable.low_priority_layout_border));
+                case MID -> cl.setBackground(holder.itemView.getContext().getDrawable(R.drawable.mid_priority_layout_border));
+                case HIGH -> cl.setBackground(holder.itemView.getContext().getDrawable(R.drawable.high_priority_layout_border));
+            }
         }
     }
 
