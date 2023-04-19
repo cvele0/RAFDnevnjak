@@ -4,54 +4,88 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import rs.raf.rafdnevnjak.models.Day;
+import rs.raf.rafdnevnjak.models.Obligation;
 
 public class RecyclerViewModel extends ViewModel {
-
-    public static int counter = 101;
-
-    private final MutableLiveData<List<Day>> days = new MutableLiveData<>();
-    private ArrayList<Day> dayList = new ArrayList<>();
+    private final MutableLiveData<HashMap<Day, ArrayList<Obligation>>> obligations = new MutableLiveData<>();
+    private HashMap<Day, ArrayList<Obligation>> obligationsMap = new HashMap<>();
 
     public RecyclerViewModel() {
-//        for (int i = 0; i <= 100; i++) {
-//            Day day = new Day("Day" + i);
-//            dayList.add(day);
-//        }
-        // We are doing this because cars.setValue in the background is first checking if the reference on the object is same
-        // and if it is it will not do notifyAll. By creating a new list, we get the new reference everytime
-        ArrayList<Day> listToSubmit = new ArrayList<>(dayList);
-        days.setValue(listToSubmit);
+        HashMap<Day, ArrayList<Obligation>> mapToSubmit = new HashMap<>(obligationsMap);
+        obligations.setValue(mapToSubmit);
     }
 
-    public LiveData<List<Day>> getDays() {
-        return days;
+    public LiveData<HashMap<Day, ArrayList<Obligation>>> getObligations() {
+        return obligations;
     }
 
-//    public void filterDays(String filter) {
-//        List<Day> filteredList = dayList.stream().filter(car -> car.getManufacturer().toLowerCase().startsWith(filter.toLowerCase())).collect(Collectors.toList());
-//        days.setValue(filteredList);
-//    }
-
-    public int addDay(String pictureUrl, String manufacturer, String model) {
-        int id = counter++;
-//        Day day = new Day("day" + id);
-//        dayList.add(day);
-        ArrayList<Day> listToSubmit = new ArrayList<>(dayList);
-        days.setValue(listToSubmit);
-        return id;
+    public void filterObligations(Day day, String filter) {
+        if (obligationsMap.get(day) == null) return;
+        List<Obligation> list = obligationsMap.get(day)
+                .stream()
+                .filter(ob -> ob.getName().toLowerCase().startsWith(filter.toLowerCase()))
+                .collect(Collectors.toList());
+        ArrayList<Obligation> filtered = new ArrayList<>(list);
+        HashMap<Day, ArrayList<Obligation>> filteredMap = new HashMap<>(obligationsMap);
+        filteredMap.put(day, filtered);
+        obligations.setValue(filteredMap);
     }
 
-    public void removeDay(int id) {
-        Optional<Day> carObject = dayList.stream().filter(car -> car.getId() == id).findFirst();
-        if (carObject.isPresent()) {
-            dayList.remove(carObject.get());
-            ArrayList<Day> listToSubmit = new ArrayList<>(dayList);
-            days.setValue(listToSubmit);
-        }
+    @SuppressWarnings("ConstantConditions")
+    public void showAllObligations(Day day) {
+        if (obligationsMap.get(day) == null) return;
+        ArrayList<Obligation> filtered = new ArrayList<>(obligationsMap.get(day));
+        HashMap<Day, ArrayList<Obligation>> filteredMap = new HashMap<>(obligationsMap);
+        filteredMap.put(day, filtered);
+        obligations.setValue(filteredMap);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public void showActiveObligations(Day day) {
+        if (obligationsMap.get(day) == null) return;
+        List<Obligation> list = obligationsMap.get(day)
+                .stream()
+                .filter(ob -> {
+                    LocalTime obg = ob.getStartTime();
+                    LocalTime now = LocalTime.now();
+                    LocalTime timeObg = LocalTime.of(obg.getHour(), obg.getMinute());
+                    LocalTime timeNow = LocalTime.of(now.getHour(), now.getMinute());
+                    return timeObg.isAfter(timeNow);
+                })
+                .collect(Collectors.toList());
+        ArrayList<Obligation> filtered = new ArrayList<>(list);
+        HashMap<Day, ArrayList<Obligation>> filteredMap = new HashMap<>(obligationsMap);
+        filteredMap.put(day, filtered);
+        obligations.setValue(filteredMap);
+    }
+
+    public void reserveSpace(Day day) {
+        obligationsMap.putIfAbsent(day, new ArrayList<>());
+        HashMap<Day, ArrayList<Obligation>> mapToSubmit = new HashMap<>(obligationsMap);
+        obligations.setValue(mapToSubmit);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public void addObligation(Day day, Obligation obligation) {
+        obligationsMap.putIfAbsent(day, new ArrayList<>());
+        obligationsMap.get(day).add(obligation);
+        obligationsMap.get(day).sort(Comparator.comparing(Obligation::getStartTime));
+        HashMap<Day, ArrayList<Obligation>> mapToSubmit = new HashMap<>(obligationsMap);
+        obligations.setValue(mapToSubmit);
+    }
+
+    public void removeObligation(Day day, Obligation obligation) {
+        Objects.requireNonNull(obligationsMap.get(day)).remove(obligation);
+        HashMap<Day, ArrayList<Obligation>> mapToSubmit = new HashMap<>(obligationsMap);
+        obligations.setValue(mapToSubmit);
     }
 }

@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import java.time.LocalDate;
+
 import rs.raf.rafdnevnjak.fragments.CalendarFragment;
 import rs.raf.rafdnevnjak.fragments.DailyPlanFragment;
 import rs.raf.rafdnevnjak.fragments.ProfileFragment;
@@ -26,7 +28,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         return switch (position) {
             case FRAGMENT_1 -> new CalendarFragment();
-            case FRAGMENT_2 -> new DailyPlanFragment();
+            case FRAGMENT_2 -> new DailyPlanFragment(LocalDate.now());
             default -> new ProfileFragment();
         };
     }

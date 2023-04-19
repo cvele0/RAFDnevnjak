@@ -1,8 +1,6 @@
 package rs.raf.rafdnevnjak.recycler;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,7 +43,7 @@ public class CalendarAdapter extends ListAdapter<Day, CalendarAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.calendar_cell, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.calendar_cell, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = (int) (parent.getHeight() * 0.166666666);
         return new ViewHolder(view, onItemListener);
@@ -55,7 +52,7 @@ public class CalendarAdapter extends ListAdapter<Day, CalendarAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Day day = daysOfMonth.get(position);
-        holder.dayOfMonth.setText(day.getDay());
+        holder.dayOfMonth.setText(day.getDayOfMonth());
         ConstraintLayout cl = holder.itemView.findViewById(R.id.cellLayout);
 
         Random random = new Random();
