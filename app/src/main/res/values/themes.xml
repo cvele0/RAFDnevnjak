@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.RAFDnevnjak" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/oxford</item>
+        <item name="colorPrimaryVariant">@color/babyBlue</item>
+        <item name="colorOnPrimary">@color/loginText</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
@@ -16,6 +16,6 @@
 
     <style name="LoginFragmentTextStyle" parent="Theme.RAFDnevnjak">
         <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@color/purple_500</item>
+        <item name="android:textColor">@color/oxford</item>
     </style>
 </resources>
