@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import rs.raf.rafdnevnjak.MainActivity;
+import rs.raf.rafdnevnjak.activities.MainActivity;
 import rs.raf.rafdnevnjak.fragments.CalendarFragment;
 import rs.raf.rafdnevnjak.fragments.DailyPlanFragment;
 import rs.raf.rafdnevnjak.fragments.ProfileFragment;

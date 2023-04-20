@@ -1,4 +1,4 @@
-package rs.raf.rafdnevnjak;
+package rs.raf.rafdnevnjak.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
@@ -21,6 +21,7 @@ import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import rs.raf.rafdnevnjak.R;
 import rs.raf.rafdnevnjak.fragments.CalendarFragment;
 import rs.raf.rafdnevnjak.fragments.DailyPlanFragment;
 import rs.raf.rafdnevnjak.fragments.LoginFragment;

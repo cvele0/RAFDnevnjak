@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/showObligationLayout"
     android:background="@color/oxford"
-    tools:context=".ShowObligationActivity">
+    tools:context=".activities.ShowObligationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

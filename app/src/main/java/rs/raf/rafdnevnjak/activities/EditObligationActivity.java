@@ -1,4 +1,4 @@
-package rs.raf.rafdnevnjak;
+package rs.raf.rafdnevnjak.activities;
 
 import android.app.Activity;
 import android.app.TimePickerDialog;
@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import rs.raf.rafdnevnjak.R;
 import rs.raf.rafdnevnjak.models.Day;
 import rs.raf.rafdnevnjak.models.Obligation;
 import rs.raf.rafdnevnjak.models.Priority;

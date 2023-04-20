@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import rs.raf.rafdnevnjak.MainActivity;
+import rs.raf.rafdnevnjak.activities.MainActivity;
 import rs.raf.rafdnevnjak.R;
 import rs.raf.rafdnevnjak.models.User;
 

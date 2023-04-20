@@ -1,4 +1,4 @@
-package rs.raf.rafdnevnjak;
+package rs.raf.rafdnevnjak.activities;
 
 import static rs.raf.rafdnevnjak.fragments.CalendarFragment.SWIPE_THRESHOLD;
 import static rs.raf.rafdnevnjak.fragments.CalendarFragment.SWIPE_VELOCITY_THRESHOLD;
@@ -20,13 +20,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import rs.raf.rafdnevnjak.R;
 import rs.raf.rafdnevnjak.listeners.OnSwipeTouchListener;
 import rs.raf.rafdnevnjak.models.Day;
 import rs.raf.rafdnevnjak.models.Obligation;

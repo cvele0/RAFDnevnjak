@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import rs.raf.rafdnevnjak.MainActivity;
+import rs.raf.rafdnevnjak.activities.MainActivity;
 import rs.raf.rafdnevnjak.R;
 import rs.raf.rafdnevnjak.models.Day;
 import rs.raf.rafdnevnjak.recycler.CalendarAdapter;

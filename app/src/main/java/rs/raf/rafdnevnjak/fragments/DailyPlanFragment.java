@@ -30,10 +30,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
-import rs.raf.rafdnevnjak.EditObligationActivity;
-import rs.raf.rafdnevnjak.MainActivity;
+import rs.raf.rafdnevnjak.activities.EditObligationActivity;
+import rs.raf.rafdnevnjak.activities.MainActivity;
 import rs.raf.rafdnevnjak.R;
-import rs.raf.rafdnevnjak.ShowObligationActivity;
+import rs.raf.rafdnevnjak.activities.ShowObligationActivity;
 import rs.raf.rafdnevnjak.models.Day;
 import rs.raf.rafdnevnjak.models.Obligation;
 import rs.raf.rafdnevnjak.models.Priority;
