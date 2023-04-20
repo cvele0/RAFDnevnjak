@@ -121,7 +121,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="305dp"
+        android:layout_height="450dp"
         android:orientation="horizontal"
         android:background="@drawable/empty_layout_border"
         android:layout_marginTop="0dp"

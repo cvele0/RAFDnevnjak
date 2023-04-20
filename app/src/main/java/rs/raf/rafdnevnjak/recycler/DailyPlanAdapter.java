@@ -49,7 +49,7 @@ public class DailyPlanAdapter extends ListAdapter<Obligation, DailyPlanAdapter.D
     public DailyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.obligations_cell, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        layoutParams.height = (int) (parent.getHeight() * 0.333333);
+        layoutParams.height = (int) (parent.getHeight() * 0.25);
         return new DailyViewHolder(day, view, context, clickListener);
     }
 
