@@ -1,8 +1,14 @@
 package rs.raf.rafdnevnjak;
 
+import static rs.raf.rafdnevnjak.fragments.CalendarFragment.SWIPE_THRESHOLD;
+import static rs.raf.rafdnevnjak.fragments.CalendarFragment.SWIPE_VELOCITY_THRESHOLD;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,13 +18,16 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import rs.raf.rafdnevnjak.listeners.OnSwipeTouchListener;
 import rs.raf.rafdnevnjak.models.Day;
 import rs.raf.rafdnevnjak.models.Obligation;
 
@@ -40,6 +49,7 @@ public class ShowObligationActivity extends AppCompatActivity {
     private Day day;
     private int selectedIndex;
     private int beforeSelectedIndex;
+    private LinearLayout editTextLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +95,7 @@ public class ShowObligationActivity extends AppCompatActivity {
         editButton = findViewById(R.id.showObligationEdit);
         deleteButton = findViewById(R.id.showObligationDelete);
         linearLayout = findViewById(R.id.showObligationLayout);
+        editTextLayout = findViewById(R.id.showObligationEditTextLayout);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -98,6 +109,18 @@ public class ShowObligationActivity extends AppCompatActivity {
 
         setView();
         initListeners();
+    }
+
+    private void nextIndex() {
+        int sz = obligations.size();
+        selectedIndex = (selectedIndex + 1) % sz;
+        setView();
+    }
+
+    private void prevIndex() {
+        int sz = obligations.size();
+        selectedIndex = (selectedIndex - 1 + sz) % sz;
+        setView();
     }
 
     private void setView() {
@@ -168,6 +191,8 @@ public class ShowObligationActivity extends AppCompatActivity {
             newIntent.putExtra(EditObligationActivity.POSITION_KEY, selectedIndex);
             editObligationActivityResultLauncher.launch(newIntent);
         });
+
+        initSwipeListener();
     }
 
     @Override
@@ -180,5 +205,60 @@ public class ShowObligationActivity extends AppCompatActivity {
         returnIntent.putExtra(SHOW_OBLIGATION_RETURN_KEY, obligations);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void initSwipeListener() {
+        GestureDetector gestureDetector = new GestureDetector(this,
+                new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onDown(@NonNull MotionEvent e) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
+                        try {
+                            float diffX = e2.getX() - e1.getX();
+                            if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                                if (diffX > 0) {
+//                                    swipeUpAction();
+                                    Toast.makeText(ShowObligationActivity.this, "left ro right", Toast.LENGTH_LONG).show();
+                                } else {
+//                                    swipeDownAction();
+                                    Toast.makeText(ShowObligationActivity.this, "Right to left", Toast.LENGTH_LONG).show();
+                                }
+                                return true;
+                            }
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+                        return false;
+                    }
+                });
+
+        editText.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                Toast.makeText(ShowObligationActivity.this, "left", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSwipeRight() {
+                Toast.makeText(ShowObligationActivity.this, "right", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        linearLayout.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                nextIndex();
+            }
+
+            @Override
+            public void onSwipeRight() {
+                prevIndex();
+            }
+        });
     }
 }

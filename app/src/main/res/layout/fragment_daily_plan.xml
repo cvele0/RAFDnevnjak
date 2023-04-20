@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/dailyPlanFragmentLayout"
+    android:background="@color/oxford"
     tools:context=".fragments.DailyPlanFragment">
 
     <LinearLayout
@@ -23,13 +24,14 @@
             android:textSize="25sp"
             android:text="Oct 23 2000"
             android:textAlignment="center"
-            android:textColor="@color/black" />
+            android:textColor="@color/loginText" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:backgroundTint="@color/silverBlue"
         android:background="@drawable/empty_layout_border"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp">
@@ -47,6 +49,8 @@
             android:id="@+id/dailyPlanCheckBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/babyBlue"
+            android:buttonTint="@color/black"
             android:layout_weight="1"
             android:button="@drawable/custom_checkbox"
             android:paddingTop="8dp"
@@ -59,6 +63,7 @@
         android:orientation="horizontal"
         android:background="@drawable/empty_layout_border"
         android:layout_marginTop="0dp"
+        android:backgroundTint="@color/loginText"
         android:layout_marginBottom="0dp">
 
         <SearchView
@@ -125,6 +130,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dailyPlanRecyclerView"
             android:layout_width="match_parent"
+            android:background="@color/loginText"
             android:layout_height="match_parent">
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>

@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -152,31 +151,16 @@ public class EditObligationActivity extends AppCompatActivity {
             int hour = timeNow.getHour();
             int minute = timeNow.getMinute();
 
-            TimePickerDialog endTimePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    EditObligationActivity.this.setEndTime(hourOfDay, minute);
-                }
-            }, hour, minute, true);
+            TimePickerDialog endTimePickerDialog = new TimePickerDialog(this, (view, hourOfDay, minute1) ->
+                    EditObligationActivity.this.setEndTime(hourOfDay, minute1), hour, minute, true);
 
-            TimePickerDialog startTimePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    EditObligationActivity.this.setStartTime(hourOfDay, minute);
-                    endTimePickerDialog.show();
-                }
+            TimePickerDialog startTimePickerDialog = new TimePickerDialog(this, (view, hourOfDay, minute12) -> {
+                EditObligationActivity.this.setStartTime(hourOfDay, minute12);
+                endTimePickerDialog.show();
             }, hour, minute, true);
 
             // Show the time picker dialog
             startTimePickerDialog.show();
-
-            if (this.startTime == null) {
-                Toast.makeText(this, "NULA BE BATO", Toast.LENGTH_LONG).show();
-
-            } else {
-                Toast.makeText(this, String.valueOf(startTime), Toast.LENGTH_LONG).show();
-
-            }
         });
 
         titleText.addTextChangedListener(new TextWatcher() {
@@ -220,13 +204,9 @@ public class EditObligationActivity extends AppCompatActivity {
             obligation.setPriority(Priority.HIGH);
         });
 
-        createEditButton.setOnClickListener(e -> {
-            closeActivity();
-        });
+        createEditButton.setOnClickListener(e -> closeActivity());
 
-        cancelButton.setOnClickListener(e -> {
-            finish();
-        });
+        cancelButton.setOnClickListener(e -> finish());
     }
 
     @Override
