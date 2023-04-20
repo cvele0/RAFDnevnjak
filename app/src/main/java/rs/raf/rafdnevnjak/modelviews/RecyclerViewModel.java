@@ -126,4 +126,10 @@ public class RecyclerViewModel extends ViewModel {
         obligations.setValue(mapToSubmit);
         return obligation;
     }
+
+    public void modifyObligation(Day day, Obligation obligation, int position) {
+        obligationsMap.get(day).set(position, obligation);
+        HashMap<Day, ArrayList<Obligation>> mapToSubmit = new HashMap<>(obligationsMap);
+        obligations.setValue(mapToSubmit);
+    }
 }

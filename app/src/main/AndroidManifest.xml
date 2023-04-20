@@ -26,6 +26,10 @@
         <activity
             android:name=".ShowObligationActivity">
         </activity>
+
+        <activity
+            android:name=".EditObligationActivity">
+        </activity>
     </application>
 
 </manifest>

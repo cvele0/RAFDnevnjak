@@ -11,6 +11,13 @@ public class Obligation implements Serializable {
     private LocalTime endTime;
     private String text;
 
+    public Obligation() {
+        this.name = "";
+        this.priority = Priority.LOW;
+        this.text = "";
+        this.startTime = this.endTime = LocalTime.now();
+    }
+
     public Obligation(String name, Priority priority, LocalTime startTime, LocalTime endTime, String text) {
         this.name = name;
         this.priority = priority;
@@ -60,5 +67,25 @@ public class Obligation implements Serializable {
 
     public String getText() {
         return text;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

@@ -30,6 +30,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
+import rs.raf.rafdnevnjak.EditObligationActivity;
 import rs.raf.rafdnevnjak.MainActivity;
 import rs.raf.rafdnevnjak.R;
 import rs.raf.rafdnevnjak.ShowObligationActivity;
@@ -68,7 +69,26 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
                     ArrayList<Obligation> list = (ArrayList<Obligation>) data.getSerializableExtra(ShowObligationActivity.SHOW_OBLIGATION_RETURN_KEY);
                     recyclerViewModel.setObligations(new Day(selectedDate.minusDays(1)), list);
                 } else {
-                    Toast.makeText(getContext(), "Error happened", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Show - Error happened", Toast.LENGTH_LONG).show();
+                }
+            });
+
+    ActivityResultLauncher<Intent> editObligationActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    Obligation obligation = (Obligation) data.getSerializableExtra(EditObligationActivity.EDIT_OBLIGATION_RETURN_KEY);
+                    int returnPosition = data.getIntExtra(EditObligationActivity.RETURN_POSITION_RETURN_KEY, -1);
+                    if (returnPosition == -1) {
+                        recyclerViewModel.addObligation(new Day(selectedDate.minusDays(1)), obligation);
+                    } else {
+                        recyclerViewModel.modifyObligation(new Day(selectedDate.minusDays(1)), obligation, returnPosition);
+                    }
+                    Toast.makeText(getContext(), R.string.data_saved, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), R.string.data_discarded, Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -223,8 +243,24 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
 
     @Override
     public void onEditClick(String name, Day day) {
-        //TODO implement
-        Toast.makeText(getContext(), "edit clicked", Toast.LENGTH_LONG).show();
+        Day dayBefore = new Day(day.getDate().minusDays(1));
+        Intent intent = new Intent(requireActivity(), EditObligationActivity.class);
+        int pos = -1;
+        Obligation obligation = null;
+        for (int i = 0; i < recyclerViewModel.getObligations().getValue().get(dayBefore).size(); i++) {
+            if (recyclerViewModel.getObligations().getValue().get(dayBefore).get(i).getName().equals(name)) {
+                pos = i;
+                obligation = recyclerViewModel.getObligations().getValue().get(dayBefore).get(i);
+                break;
+            }
+        }
+        if (pos == -1) return;
+        intent.putExtra(EditObligationActivity.EDIT_OBLIGATION_DAY_KEY, day);
+        intent.putExtra(EditObligationActivity.EDIT_OBLIGATION_OBLIGATION_KEY, obligation);
+        intent.putExtra(EditObligationActivity.IS_EDIT_KEY, true);
+        intent.putExtra(EditObligationActivity.POSITION_KEY, pos);
+        editObligationActivityResultLauncher.launch(intent);
+        refreshPager();
     }
 
     @Override

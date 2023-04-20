@@ -5,9 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/showObligationLayout"
     android:background="@color/oxford"
-    tools:context=".ShowObligationActivity">
+    tools:context=".EditObligationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +18,7 @@
         >
 
         <TextView
-            android:id="@+id/showObligationDateText"
+            android:id="@+id/editObligationDateText"
             android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -30,7 +29,6 @@
             android:textColor="@color/loginText" />
     </LinearLayout>
 
-<!--    android:background="@drawable/empty_layout_border"-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,44 +36,97 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp">
 
-        <ImageView
-            android:id="@+id/showObligationClock"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_margin="10dp"
-            app:srcCompat="@drawable/clock_white" />
+        <TextView
+            android:id="@+id/editObligationLow"
+            android:layout_width="0dp"
+            android:background="@drawable/low_priority_layout_border"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="25sp"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:text="@string/low" />
 
         <TextView
-            android:id="@+id/obligationTimeText"
+            android:id="@+id/editObligationMid"
+            android:layout_width="0dp"
+            android:background="@drawable/mid_priority_layout_border"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="25sp"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:text="@string/mid" />
+
+        <TextView
+            android:id="@+id/editObligationHigh"
+            android:layout_width="0dp"
+            android:background="@drawable/high_priority_layout_border"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="25sp"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:text="@string/high" />
+    </LinearLayout>
+
+    <!--    android:background="@drawable/empty_layout_border"-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="0dp"
+        android:layout_margin="10dp"
+        android:background="#20ffffff"
+        android:layout_marginBottom="0dp">
+
+        <EditText
+            android:id="@+id/editObligationTitleText"
             android:layout_weight="3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="25sp"
-            android:padding="10dp"
-            android:text="13:30 - 14:30"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="10dp"
+            android:textColorHint="@color/gray"
+            android:hint="@string/title"
             android:textColor="@color/white" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/editObligationTimeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="0dp"
+        android:layout_margin="10dp"
+        android:background="#20ffffff"
         android:layout_marginBottom="0dp">
 
         <TextView
-            android:id="@+id/obligationNameText"
+            android:id="@+id/editObligationTimeText"
             android:layout_weight="3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:paddingBottom="10dp"
+            android:textSize="25sp"
             android:paddingTop="10dp"
-            android:paddingStart="20dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="30dp"
             android:paddingEnd="10dp"
-            android:textStyle="bold"
-            android:text="Algebra"
-            android:textColor="@color/silverBlue" />
+            android:hint="@string/time"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/white" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/clock_white" />
     </LinearLayout>
 
     <LinearLayout
@@ -90,7 +141,7 @@
         android:layout_marginEnd="10dp">
 
         <EditText
-            android:id="@+id/showObligationEditText"
+            android:id="@+id/editObligationEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="top|start"
@@ -103,7 +154,7 @@
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
             android:background="#40ffffff"
-            android:text="Ovo je primer nekog duzeg teksta koji staje u vise redova"
+            android:hint="@string/description"
             android:textColor="@color/black"
             android:inputType="textMultiLine" />
     </LinearLayout>
@@ -116,7 +167,7 @@
         android:layout_marginBottom="0dp">
 
         <Button
-            android:id="@+id/showObligationEdit"
+            android:id="@+id/editObligationCreateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -125,10 +176,10 @@
             android:width="150dp"
             android:height="50dp"
             android:backgroundTint="@color/teal_700"
-            android:text="@string/edit" />
+            android:text="@string/create" />
 
         <Button
-            android:id="@+id/showObligationDelete"
+            android:id="@+id/editObligationCancelButton"
             android:layout_width="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
@@ -137,6 +188,6 @@
             android:width="150dp"
             android:height="50dp"
             android:backgroundTint="@color/lightWarning"
-            android:text="@string/delete" />
+            android:text="@string/cancel" />
     </LinearLayout>
 </LinearLayout>
