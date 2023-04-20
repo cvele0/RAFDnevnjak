@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -45,6 +47,35 @@ public class ShowObligationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_obligation);
         init();
     }
+
+    private void copyObligation(Obligation ob, int pos) {
+        Obligation obligation = obligations.get(pos);
+        obligation.setName(ob.getName());
+        obligation.setPriority(ob.getPriority());
+        obligation.setStartTime(ob.getStartTime());
+        obligation.setEndTime(ob.getEndTime());
+        obligation.setText(ob.getText());
+        setView();
+    }
+
+    ActivityResultLauncher<Intent> editObligationActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    Obligation obligation = (Obligation) data.getSerializableExtra(EditObligationActivity.EDIT_OBLIGATION_RETURN_KEY);
+                    int returnPosition = data.getIntExtra(EditObligationActivity.RETURN_POSITION_RETURN_KEY, -1);
+                    if (returnPosition == -1) {
+
+                    } else {
+                        copyObligation(obligation, returnPosition);
+                    }
+                    Toast.makeText(this, R.string.data_saved, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, R.string.data_discarded, Toast.LENGTH_LONG).show();
+                }
+            });
 
     private void init() {
         dateText = findViewById(R.id.showObligationDateText);
@@ -130,7 +161,12 @@ public class ShowObligationActivity extends AppCompatActivity {
 
         editButton.setOnClickListener(e -> {
             if (obligations.isEmpty()) return;
-
+            Intent newIntent = new Intent(this, EditObligationActivity.class);
+            newIntent.putExtra(EditObligationActivity.EDIT_OBLIGATION_DAY_KEY, day);
+            newIntent.putExtra(EditObligationActivity.EDIT_OBLIGATION_OBLIGATION_KEY, obligations.get(selectedIndex));
+            newIntent.putExtra(EditObligationActivity.IS_EDIT_KEY, true);
+            newIntent.putExtra(EditObligationActivity.POSITION_KEY, selectedIndex);
+            editObligationActivityResultLauncher.launch(newIntent);
         });
     }
 

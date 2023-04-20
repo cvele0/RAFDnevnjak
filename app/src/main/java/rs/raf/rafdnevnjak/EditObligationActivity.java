@@ -74,22 +74,37 @@ public class EditObligationActivity extends AppCompatActivity {
             boolean is_edit = intent.getBooleanExtra(IS_EDIT_KEY, false);
             this.position = intent.getIntExtra(POSITION_KEY, -1);
             this.day = day;
-            this.obligation = obligation;
+            if (obligation != null) {
+                this.obligation = obligation;
+            } else {
+                this.obligation = new Obligation();
+            }
             this.isEdit = is_edit;
         }
 
         if (this.isEdit) {
-            returnPosition = position;
             setEditView();
         } else {
-            returnPosition = -1;
             setNewView();
         }
+        returnPosition = position;
         initListeners();
     }
 
     private void setNewView() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd. yyyy.");
+        dateText.setText(day.getDate().format(formatter));
 
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        String textForTime = obligation.getStartTime().format(timeFormatter);
+        textForTime += " - ";
+        textForTime += obligation.getEndTime().format(timeFormatter);
+        timeText.setText(textForTime);
+
+        titleText.setText(obligation.getName());
+
+        editText.setText(obligation.getText());
+        createEditButton.setText(R.string.create);
     }
 
     private void setEditView() {

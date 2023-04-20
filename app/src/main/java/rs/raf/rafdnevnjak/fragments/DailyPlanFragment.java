@@ -185,10 +185,15 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
 
     private void initListeners() {
         floatingActionButton.setOnClickListener(e -> {
-            Day day = new Day(selectedDate.minusDays(1));
-            dodajBezveze(day);
+//            Day day = new Day(selectedDate.minusDays(1));
+            Day day = new Day(selectedDate);
+            Intent intent = new Intent(requireActivity(), EditObligationActivity.class);
+            intent.putExtra(EditObligationActivity.EDIT_OBLIGATION_DAY_KEY, day);
+//            intent.putExtra(EditObligationActivity.EDIT_OBLIGATION_OBLIGATION_KEY, null);
+            intent.putExtra(EditObligationActivity.IS_EDIT_KEY, false);
+//            intent.putExtra(EditObligationActivity.POSITION_KEY, -1);
+            editObligationActivityResultLauncher.launch(intent);
             refreshPager();
-            //TODO raditi
         });
 
         recyclerViewModel.getObligations().observe(requireActivity(), obligations -> {
@@ -275,13 +280,10 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
         if (!deleted.isPresent()) return;
         Obligation deletedObligation = recyclerViewModel.removeObligation(dayBefore, deleted.get());
         refreshPager();
-        snackbar.setAction("UNDO", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (deletedObligation == null) return;
-                recyclerViewModel.addObligation(dayBefore, deletedObligation);
-                refreshPager();
-            }
+        snackbar.setAction("UNDO", view -> {
+            if (deletedObligation == null) return;
+            recyclerViewModel.addObligation(dayBefore, deletedObligation);
+            refreshPager();
         });
         snackbar.show();
     }
