@@ -1,12 +1,17 @@
 package rs.raf.rafdnevnjak.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,13 +20,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 
 import rs.raf.rafdnevnjak.R;
+import rs.raf.rafdnevnjak.ShowObligationActivity;
 import rs.raf.rafdnevnjak.models.Day;
 import rs.raf.rafdnevnjak.models.Obligation;
 import rs.raf.rafdnevnjak.models.Priority;
@@ -41,10 +51,24 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
     private TextView midTab;
     private TextView highTab;
     public static LocalDate selectedDate;
+    private LinearLayout linearLayout;
     public DailyPlanFragment(LocalDate localDate) {
         super(R.layout.fragment_daily_plan);
         selectedDate = localDate;
     }
+
+    ActivityResultLauncher<Intent> obligationActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    ArrayList<Obligation> list = (ArrayList<Obligation>) data.getSerializableExtra(ShowObligationActivity.SHOW_OBLIGATION_RETURN_KEY);
+                    recyclerViewModel.setObligations(new Day(selectedDate.minusDays(1)), list);
+                } else {
+                    Toast.makeText(getContext(), "Error happened", Toast.LENGTH_LONG).show();
+                }
+            });
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +96,7 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
         lowTab = view.findViewById(R.id.lowTab);
         midTab = view.findViewById(R.id.midTab);
         highTab = view.findViewById(R.id.highTab);
+        linearLayout = view.findViewById(R.id.dailyPlanFragmentLayout);
 
         checkBox.setChecked(true);
         setView();
@@ -203,17 +228,40 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
     }
 
     @Override
-    public void onObligationClick() {
-        Toast.makeText(getContext(), selectedDate.toString(), Toast.LENGTH_LONG).show();
+    public void onObligationClick(int position, Day day) {
+        Day dayBefore = new Day(day.getDate().minusDays(1));
+        Intent intent = new Intent(requireActivity(), ShowObligationActivity.class);
+        intent.putExtra(ShowObligationActivity.DAY_KEY, day);
+        intent.putExtra(ShowObligationActivity.OBLIGATION_KEY,
+                recyclerViewModel.getObligations().getValue().get(dayBefore));
+        intent.putExtra(ShowObligationActivity.SELECTED_OBLIGATION_KEY, position);
+        obligationActivityResultLauncher.launch(intent);
     }
 
     @Override
-    public void onEditClick() {
-        Toast.makeText(getContext(), "delete clicked", Toast.LENGTH_LONG).show();
+    public void onEditClick(String name, Day day) {
+        //TODO implement
+        Toast.makeText(getContext(), "edit clicked", Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onDeleteClick() {
-        Toast.makeText(getContext(), "delete", Toast.LENGTH_LONG).show();
+    public void onDeleteClick(String name, Day day) {
+        Snackbar snackbar = Snackbar.make(linearLayout, "Item deleted", Snackbar.LENGTH_LONG);
+        Day dayBefore = new Day(day.getDate().minusDays(1));
+        Optional<Obligation> deleted = recyclerViewModel.
+                getObligations().getValue().get(dayBefore)
+                .stream()
+                .filter(ob -> ob.getName().equals(name))
+                .findFirst();
+        if (!deleted.isPresent()) return;
+        Obligation deletedObligation = recyclerViewModel.removeObligation(dayBefore, deleted.get());
+        snackbar.setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (deletedObligation == null) return;
+                recyclerViewModel.addObligation(dayBefore, deletedObligation);
+            }
+        });
+        snackbar.show();
     }
 }

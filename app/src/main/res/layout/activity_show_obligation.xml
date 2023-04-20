@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/showObligationLayout"
     android:background="@color/oxford"
-    tools:context=".fragments.ShowObligationFragment">
+    tools:context=".ShowObligationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

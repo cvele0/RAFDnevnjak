@@ -1,9 +1,10 @@
 package rs.raf.rafdnevnjak.models;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
 
-public class Obligation {
+public class Obligation implements Serializable {
     private String name;
     private Priority priority;
     private LocalTime startTime;

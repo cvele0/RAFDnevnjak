@@ -1,6 +1,8 @@
 package rs.raf.rafdnevnjak.models;
 
-public enum Priority {
+import java.io.Serializable;
+
+public enum Priority implements Serializable {
     LOW,
     MID,
     HIGH

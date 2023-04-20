@@ -1,9 +1,10 @@
 package rs.raf.rafdnevnjak.models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Day {
+public class Day implements Serializable {
     private LocalDate date;
 
     public Day(LocalDate date) {

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -38,9 +39,9 @@ public class DailyPlanAdapter extends ListAdapter<Obligation, DailyPlanAdapter.D
     }
 
     public interface ClickListener {
-        void onObligationClick();
-        void onEditClick();
-        void onDeleteClick();
+        void onObligationClick(int position, Day day);
+        void onEditClick(String name, Day day);
+        void onDeleteClick(String name, Day day);
     }
 
     @NonNull
@@ -49,7 +50,7 @@ public class DailyPlanAdapter extends ListAdapter<Obligation, DailyPlanAdapter.D
         View view = LayoutInflater.from(context).inflate(R.layout.obligations_cell, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = (int) (parent.getHeight() * 0.333333);
-        return new DailyViewHolder(view, context, clickListener);
+        return new DailyViewHolder(day, view, context, clickListener);
     }
 
     @Override
@@ -60,6 +61,7 @@ public class DailyPlanAdapter extends ListAdapter<Obligation, DailyPlanAdapter.D
             case MID -> holder.showObligation.setBackgroundColor(holder.itemView.getResources().getColor(R.color.mid_priority));
             case HIGH -> holder.showObligation.setBackgroundColor(holder.itemView.getResources().getColor(R.color.high_priority));
         }
+        initListeners(holder, position);
         holder.nameOfObligation.setText(obligation.getName());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm"); // create a formatter
         String timeToPrint = obligation.getStartTime().format(formatter) + " - ";
@@ -83,7 +85,22 @@ public class DailyPlanAdapter extends ListAdapter<Obligation, DailyPlanAdapter.D
         }
     }
 
+    private void initListeners(DailyViewHolder viewHolder, int position) {
+        viewHolder.editObligation.setOnClickListener(e -> {
+            clickListener.onEditClick(viewHolder.nameOfObligation.getText().toString(), day);
+        });
+
+        viewHolder.deleteObligation.setOnClickListener(e -> {
+            clickListener.onDeleteClick(viewHolder.nameOfObligation.getText().toString(), day);
+        });
+
+        viewHolder.obligationsLayout.setOnClickListener(e -> {
+            clickListener.onObligationClick(position, day);
+        });
+    }
+
     public static class DailyViewHolder extends RecyclerView.ViewHolder {
+        private Day day;
         private Context context;
         public ImageView showObligation;
         public TextView timeOfObligation;
@@ -93,8 +110,9 @@ public class DailyPlanAdapter extends ListAdapter<Obligation, DailyPlanAdapter.D
         public LinearLayout obligationsLayout;
         private ClickListener clickListener;
 
-        public DailyViewHolder(@NonNull View itemView, Context context, ClickListener clickListener) {
+        public DailyViewHolder(Day day, @NonNull View itemView, Context context, ClickListener clickListener) {
             super(itemView);
+            this.day = day;
             showObligation = itemView.findViewById(R.id.showObligation);
             timeOfObligation = itemView.findViewById(R.id.timeOfObligation);
             nameOfObligation = itemView.findViewById(R.id.nameOfObligation);
@@ -103,21 +121,12 @@ public class DailyPlanAdapter extends ListAdapter<Obligation, DailyPlanAdapter.D
             obligationsLayout = itemView.findViewById(R.id.obligationsCellLayout);
             this.context = context;
             this.clickListener = clickListener;
-            initListeners();
+//            itemView.setOnClickListener(this);
         }
 
-        private void initListeners() {
-            editObligation.setOnClickListener(e -> {
-                clickListener.onEditClick();
-            });
-
-            deleteObligation.setOnClickListener(e -> {
-                clickListener.onDeleteClick();
-            });
-
-            obligationsLayout.setOnClickListener(e -> {
-                clickListener.onObligationClick();
-            });
-        }
+//        @Override
+//        public void onClick(View v) {
+//            clickListener.onObligationClick(getBindingAdapterPosition(), day);
+//        }
     }
 }
