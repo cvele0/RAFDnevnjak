@@ -1,19 +1,16 @@
 package rs.raf.rafdnevnjak.modelviews;
 
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import rs.raf.rafdnevnjak.models.Day;
@@ -22,10 +19,10 @@ import rs.raf.rafdnevnjak.models.Priority;
 
 public class RecyclerViewModel extends ViewModel {
     private final MutableLiveData<HashMap<Day, ArrayList<Obligation>>> obligations = new MutableLiveData<>();
-    private HashMap<Day, HashSet<Obligation>> obligationsMap = new HashMap<>();
+    private HashMap<Day, ArrayList<Obligation>> obligationsMap = new HashMap<>();
 
     public RecyclerViewModel() {
-        HashMap<Day, HashSet<Obligation>> mapToSubmit = new HashMap<>(obligationsMap);
+        HashMap<Day, ArrayList<Obligation>> mapToSubmit = new HashMap<>(obligationsMap);
         obligations.setValue(mapToSubmit);
     }
 
@@ -103,6 +100,10 @@ public class RecyclerViewModel extends ViewModel {
     @SuppressWarnings("ConstantConditions")
     public void addObligation(Day day, Obligation obligation) {
         obligationsMap.putIfAbsent(day, new ArrayList<>());
+        Optional<Obligation> opt = obligationsMap.get(day)
+                        .stream().filter(ob -> ob.getName().equals(obligation.getName()))
+                        .findAny();
+        if (opt.isPresent()) return;
         obligationsMap.get(day).add(obligation);
         obligationsMap.get(day).sort(Comparator.comparing(Obligation::getStartTime));
         HashMap<Day, ArrayList<Obligation>> mapToSubmit = new HashMap<>(obligationsMap);
@@ -112,17 +113,15 @@ public class RecyclerViewModel extends ViewModel {
     public Obligation removeObligation(Day day, Obligation ob) {
         Obligation obligation = null;
         if (obligationsMap.get(day) == null) return null;
-        int idx = -1;
+        ArrayList<Obligation> list = new ArrayList<>();
         for (int i = 0; i < obligationsMap.get(day).size(); i++) {
             if (obligationsMap.get(day).get(i).equals(ob)) {
-                idx = i;
                 obligation = obligationsMap.get(day).get(i);
-                break;
+            } else {
+                list.add(obligationsMap.get(day).get(i));
             }
         }
-        if (idx != -1) {
-            obligationsMap.get(day).remove(idx);
-        }
+        obligationsMap.put(day, list);
         HashMap<Day, ArrayList<Obligation>> mapToSubmit = new HashMap<>(obligationsMap);
         obligations.setValue(mapToSubmit);
         return obligation;

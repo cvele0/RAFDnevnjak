@@ -93,9 +93,18 @@ public class MainActivity extends AppCompatActivity {
 
         ((BottomNavigationView)findViewById(R.id.bottomNavigation)).setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.navigation_1 -> viewPager.setCurrentItem(PagerAdapter.FRAGMENT_1, false);
-                case R.id.navigation_2 -> viewPager.setCurrentItem(PagerAdapter.FRAGMENT_2, false);
-                case R.id.navigation_3 -> viewPager.setCurrentItem(PagerAdapter.FRAGMENT_3, false);
+                case R.id.navigation_1 -> {
+                    viewPager.setCurrentItem(PagerAdapter.FRAGMENT_1, false);
+                    viewPager.getAdapter().notifyDataSetChanged();
+                }
+                case R.id.navigation_2 -> {
+                    viewPager.setCurrentItem(PagerAdapter.FRAGMENT_2, false);
+                    viewPager.getAdapter().notifyDataSetChanged();
+                }
+                case R.id.navigation_3 -> {
+                    viewPager.setCurrentItem(PagerAdapter.FRAGMENT_3, false);
+                    viewPager.getAdapter().notifyDataSetChanged();
+                }
             }
             return true;
         });
@@ -141,5 +150,9 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.navigation_2);
             viewPager.setCurrentItem(PagerAdapter.FRAGMENT_2);
         }
+    }
+
+    public PagerAdapter getAdapter() {
+        return (PagerAdapter) viewPager.getAdapter();
     }
 }

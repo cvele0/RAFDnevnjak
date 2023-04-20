@@ -22,14 +22,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 
+import rs.raf.rafdnevnjak.MainActivity;
 import rs.raf.rafdnevnjak.R;
 import rs.raf.rafdnevnjak.ShowObligationActivity;
 import rs.raf.rafdnevnjak.models.Day;
@@ -38,6 +39,7 @@ import rs.raf.rafdnevnjak.models.Priority;
 import rs.raf.rafdnevnjak.modelviews.RecyclerViewModel;
 import rs.raf.rafdnevnjak.recycler.DailyPlanAdapter;
 import rs.raf.rafdnevnjak.recycler.ObligationDiffItemCallback;
+import rs.raf.rafdnevnjak.viewpager.PagerAdapter;
 
 public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.ClickListener {
     private TextView dateText;
@@ -73,12 +75,12 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        recyclerViewModel = new ViewModelProvider(requireActivity()).get(RecyclerViewModel.class);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        recyclerViewModel = new ViewModelProvider(requireActivity()).get(RecyclerViewModel.class);
         init(view);
     }
 
@@ -118,73 +120,54 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext().getApplicationContext());
         dailyPlanRecyclerView.setLayoutManager(layoutManager);
         dailyPlanRecyclerView.setAdapter(dailyPlanAdapter);
-
-        //TODO obrisi
-//        dodajBezveze(new Day(selectedDate.minusDays(1)));
-        dodajBezveze(new Day(LocalDate.of(2023, 4, 19).minusDays(1)));
-        dodajBezveze2(new Day(LocalDate.of(2023, 4, 14).minusDays(1)));
     }
 
     private void dodajBezveze(Day day) {
-        Obligation obligation1 = new Obligation("bol",
-                Priority.MID, LocalTime.of(14, 30),
-                LocalTime.of(14, 45),
-                "Nesto protiv bolova");
-        Obligation obligation2 = new Obligation("Civ2",
-                Priority.LOW, LocalTime.of(11, 30),
-                LocalTime.of(11, 45),
-                "Civas");
-        Obligation obligation3 = new Obligation("Dij",
-                Priority.MID, LocalTime.of(20, 30),
-                LocalTime.of(20, 45),
-                "dijabolik");
-        Obligation obligation4 = new Obligation("Bla",
-                Priority.LOW, LocalTime.of(18, 30),
-                LocalTime.of(18, 45),
-                "blah blah");
-        Obligation obligation5 = new Obligation("MK",
-                Priority.HIGH, LocalTime.of(4, 0),
-                LocalTime.of(4, 30),
-                "mile bog");
-        recyclerViewModel.addObligation(day, obligation1);
-        recyclerViewModel.addObligation(day, obligation2);
-        recyclerViewModel.addObligation(day, obligation3);
-        recyclerViewModel.addObligation(day, obligation4);
-        recyclerViewModel.addObligation(day, obligation5);
+        Random random = new Random();
+        int rnd = random.nextInt(5);
+        if (rnd == 0) {
+            Obligation obligation1 = new Obligation("bol",
+                    Priority.MID, LocalTime.of(14, 30),
+                    LocalTime.of(14, 45),
+                    "Nesto protiv bolova");
+            recyclerViewModel.addObligation(day, obligation1);
+        } else if (rnd == 1) {
+            Obligation obligation2 = new Obligation("Civ2",
+                    Priority.LOW, LocalTime.of(11, 30),
+                    LocalTime.of(11, 45),
+                    "Civas");
+            recyclerViewModel.addObligation(day, obligation2);
+        } else if (rnd == 2) {
+            Obligation obligation3 = new Obligation("Dij",
+                    Priority.MID, LocalTime.of(20, 30),
+                    LocalTime.of(20, 45),
+                    "dijabolik");
+            recyclerViewModel.addObligation(day, obligation3);
+        } else if (rnd == 3) {
+            Obligation obligation4 = new Obligation("Bla",
+                    Priority.LOW, LocalTime.of(18, 30),
+                    LocalTime.of(18, 45),
+                    "blah blah");
+            recyclerViewModel.addObligation(day, obligation4);
+        } else if (rnd == 4) {
+            Obligation obligation5 = new Obligation("MK",
+                    Priority.HIGH, LocalTime.of(4, 0),
+                    LocalTime.of(4, 30),
+                    "mile bog");
+            recyclerViewModel.addObligation(day, obligation5);
+        }
     }
 
-    private void dodajBezveze2(Day day) {
-        Obligation obligation1 = new Obligation("bol",
-                Priority.MID, LocalTime.of(14, 30),
-                LocalTime.of(14, 45),
-                "Nesto protiv bolova");
-        Obligation obligation2 = new Obligation("Civ2",
-                Priority.LOW, LocalTime.of(11, 30),
-                LocalTime.of(11, 45),
-                "Civas");
-        Obligation obligation3 = new Obligation("Dij",
-                Priority.MID, LocalTime.of(20, 30),
-                LocalTime.of(20, 45),
-                "dijabolik");
-        Obligation obligation4 = new Obligation("Bla",
-                Priority.LOW, LocalTime.of(18, 30),
-                LocalTime.of(18, 45),
-                "blah blah");
-//        Obligation obligation5 = new Obligation("MK",
-//                Priority.HIGH, LocalTime.of(4, 0),
-//                LocalTime.of(4, 30),
-//                "mile bog");
-        recyclerViewModel.addObligation(day, obligation1);
-        recyclerViewModel.addObligation(day, obligation2);
-        recyclerViewModel.addObligation(day, obligation3);
-        recyclerViewModel.addObligation(day, obligation4);
-//        recyclerViewModel.addObligation(day, obligation5);
+    private void refreshPager() {
+        PagerAdapter adapter = ((MainActivity) requireActivity()).getAdapter();
+        adapter.notifyDataSetChanged();
     }
 
     private void initListeners() {
         floatingActionButton.setOnClickListener(e -> {
             Day day = new Day(selectedDate.minusDays(1));
-//            dodajBezveze(day);
+            dodajBezveze(day);
+            refreshPager();
             //TODO raditi
         });
 
@@ -255,11 +238,13 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
                 .findFirst();
         if (!deleted.isPresent()) return;
         Obligation deletedObligation = recyclerViewModel.removeObligation(dayBefore, deleted.get());
+        refreshPager();
         snackbar.setAction("UNDO", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (deletedObligation == null) return;
                 recyclerViewModel.addObligation(dayBefore, deletedObligation);
+                refreshPager();
             }
         });
         snackbar.show();

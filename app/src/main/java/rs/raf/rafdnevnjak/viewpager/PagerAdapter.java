@@ -41,11 +41,12 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getItemPosition(@NonNull Object object) {
-        if (object instanceof DailyPlanFragment && changed) {
-            changed = false;
-            return POSITION_NONE;
-        }
-        return POSITION_UNCHANGED;
+//        if (object instanceof DailyPlanFragment && changed) {
+//            changed = false;
+//            return POSITION_NONE;
+//        }
+//        return POSITION_UNCHANGED;
+        return POSITION_NONE;
     }
 
     @NonNull
