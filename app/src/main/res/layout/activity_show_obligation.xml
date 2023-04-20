@@ -125,6 +125,7 @@
             android:layout_weight="1"
             android:width="150dp"
             android:height="50dp"
+            android:textColor="@color/black"
             android:backgroundTint="@color/teal_700"
             android:text="@string/edit" />
 
@@ -137,6 +138,7 @@
             android:layout_height="wrap_content"
             android:width="150dp"
             android:height="50dp"
+            android:textColor="@color/black"
             android:backgroundTint="@color/lightWarning"
             android:text="@string/delete" />
     </LinearLayout>
