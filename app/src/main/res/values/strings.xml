@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">RAFDnevnjak</string>
-    <string name="app_title">RAF Dnevnjak</string>
-    <string name="hint_username">Username</string>
+    <string name="app_name" translatable="false">RAFDnevnjak</string>
+    <string name="app_title" translatable="false">RAF Dnevnjak</string>
+    <string name="hint_username" translatable="false">Username</string>
     <string name="hint_password">Password</string>
-    <string name="hint_email">Email</string>
-    <string name="login">Login</string>
+    <string name="hint_email" translatable="false">Email</string>
+    <string name="login" translatable="false">Login</string>
     <string name="required">This field is required</string>
     <string name="password_requirement">Password doesn\'t meet requirements</string>
     <string name="email_requirement">Email doesn\'t meet requirements</string>
@@ -24,19 +24,19 @@
     <string name="change_password">Change password</string>
     <string name="log_out">Log out</string>
     <string name="error_logging">Error while logging</string>
-    <string name="not_available">N/A</string>
+    <string name="not_available" translatable="false">N/A</string>
     <string name="input_new_password">Input new password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="new_password">New password</string>
     <string name="back">Back</string>
-    <string name="ok">OK</string>
+    <string name="ok" translatable="false">OK</string>
     <string name="passwords_not_match">Passwords don\'t match</string>
     <string name="same_password">Password is the same</string>
     <string name="password_changed">Password changed</string>
     <string name="past_obligations">Show past obligations</string>
-    <string name="low">Low</string>
-    <string name="mid">Mid</string>
-    <string name="high">High</string>
+    <string name="low" translatable="false">Low</string>
+    <string name="mid" translatable="false">Mid</string>
+    <string name="high" translatable="false">High</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="no_more_obligations">No more obligations</string>

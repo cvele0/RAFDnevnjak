@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hint_password">Sifra</string>
+    <string name="required">Ovo polje je neophodno</string>
+    <string name="password_requirement">Sifra ne ispunjava uslove</string>
+    <string name="email_requirement">Email ne ispunjava uslove</string>
+    <string name="incorrect_password">Sifra nije ispravna</string>
+    <string name="incorrect_email">Email nije ispravan</string>
+    <string name="incorrect_username">Username nije ispravan</string>
+    <string name="calendar">Kalendar</string>
+    <string name="daily_plan">Dnevni plan</string>
+    <string name="profile">Profil</string>
+    <string name="mon">PON</string>
+    <string name="tue">UTO</string>
+    <string name="wed">SRE</string>
+    <string name="thu">CET</string>
+    <string name="fri">PET</string>
+    <string name="sat">SUB</string>
+    <string name="sun">NED</string>
+    <string name="change_password">Promeni sifru</string>
+    <string name="log_out">Izloguj se</string>
+    <string name="error_logging">Greska prilikom logovanja</string>
+    <string name="input_new_password">Unesite novu sifru</string>
+    <string name="confirm_password">Potvrdite sifru</string>
+    <string name="new_password">Nova sifra</string>
+    <string name="back">Nazad</string>
+    <string name="passwords_not_match">Sifre nisu iste</string>
+    <string name="same_password">Sifra je ista</string>
+    <string name="password_changed">Sifra promenjena</string>
+    <string name="past_obligations">Prikazi prethodne obaveze</string>
+    <string name="edit">Izmeni</string>
+    <string name="delete">Izbrisi</string>
+    <string name="no_more_obligations">Nema vise obaveza</string>
+    <string name="title">Naslov</string>
+    <string name="time">Vreme</string>
+    <string name="description">Opis</string>
+    <string name="create">Kreiraj</string>
+    <string name="cancel">Odustani</string>
+    <string name="data_discarded">Podaci odbaceni</string>
+    <string name="data_saved">Podaci sacuvani</string>
+</resources>
