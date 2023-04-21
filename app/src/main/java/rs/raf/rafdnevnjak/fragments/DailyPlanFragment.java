@@ -23,12 +23,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
 
 import rs.raf.rafdnevnjak.activities.EditObligationActivity;
 import rs.raf.rafdnevnjak.activities.MainActivity;
@@ -142,42 +140,6 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
         dailyPlanRecyclerView.setAdapter(dailyPlanAdapter);
     }
 
-    private void dodajBezveze(Day day) {
-        Random random = new Random();
-        int rnd = random.nextInt(5);
-        if (rnd == 0) {
-            Obligation obligation1 = new Obligation("bol",
-                    Priority.MID, LocalTime.of(14, 30),
-                    LocalTime.of(14, 45),
-                    "Nesto protiv bolova");
-            recyclerViewModel.addObligation(day, obligation1);
-        } else if (rnd == 1) {
-            Obligation obligation2 = new Obligation("Civ2",
-                    Priority.LOW, LocalTime.of(11, 30),
-                    LocalTime.of(11, 45),
-                    "Civas");
-            recyclerViewModel.addObligation(day, obligation2);
-        } else if (rnd == 2) {
-            Obligation obligation3 = new Obligation("Dij",
-                    Priority.MID, LocalTime.of(20, 30),
-                    LocalTime.of(20, 45),
-                    "dijabolik");
-            recyclerViewModel.addObligation(day, obligation3);
-        } else if (rnd == 3) {
-            Obligation obligation4 = new Obligation("Bla",
-                    Priority.LOW, LocalTime.of(18, 30),
-                    LocalTime.of(18, 45),
-                    "blah blah");
-            recyclerViewModel.addObligation(day, obligation4);
-        } else if (rnd == 4) {
-            Obligation obligation5 = new Obligation("MK",
-                    Priority.HIGH, LocalTime.of(4, 0),
-                    LocalTime.of(4, 30),
-                    "mile bog");
-            recyclerViewModel.addObligation(day, obligation5);
-        }
-    }
-
     private void refreshPager() {
         PagerAdapter adapter = ((MainActivity) requireActivity()).getAdapter();
         adapter.notifyDataSetChanged();
@@ -185,13 +147,10 @@ public class DailyPlanFragment extends Fragment implements DailyPlanAdapter.Clic
 
     private void initListeners() {
         floatingActionButton.setOnClickListener(e -> {
-//            Day day = new Day(selectedDate.minusDays(1));
             Day day = new Day(selectedDate);
             Intent intent = new Intent(requireActivity(), EditObligationActivity.class);
             intent.putExtra(EditObligationActivity.EDIT_OBLIGATION_DAY_KEY, day);
-//            intent.putExtra(EditObligationActivity.EDIT_OBLIGATION_OBLIGATION_KEY, null);
             intent.putExtra(EditObligationActivity.IS_EDIT_KEY, false);
-//            intent.putExtra(EditObligationActivity.POSITION_KEY, -1);
             editObligationActivityResultLauncher.launch(intent);
             refreshPager();
         });

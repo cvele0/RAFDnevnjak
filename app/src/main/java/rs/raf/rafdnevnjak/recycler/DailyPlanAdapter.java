@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -49,7 +48,7 @@ public class DailyPlanAdapter extends ListAdapter<Obligation, DailyPlanAdapter.D
     public DailyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.obligations_cell, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        layoutParams.height = (int) (parent.getHeight() * 0.25);
+        layoutParams.height = (int) (parent.getHeight() * 0.333333);
         return new DailyViewHolder(day, view, context, clickListener);
     }
 
@@ -121,12 +120,6 @@ public class DailyPlanAdapter extends ListAdapter<Obligation, DailyPlanAdapter.D
             obligationsLayout = itemView.findViewById(R.id.obligationsCellLayout);
             this.context = context;
             this.clickListener = clickListener;
-//            itemView.setOnClickListener(this);
         }
-
-//        @Override
-//        public void onClick(View v) {
-//            clickListener.onObligationClick(getBindingAdapterPosition(), day);
-//        }
     }
 }

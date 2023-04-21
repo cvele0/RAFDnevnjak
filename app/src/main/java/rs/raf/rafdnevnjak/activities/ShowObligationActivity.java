@@ -148,7 +148,7 @@ public class ShowObligationActivity extends AppCompatActivity {
         editText.setEnabled(false);
         editText.setFocusable(false);
         editText.setCursorVisible(false);
-        editText.setKeyListener(null);
+        editText.setKeyListener(null);// TODO sredidti - text view
     }
 
     private void deleteItem() {
